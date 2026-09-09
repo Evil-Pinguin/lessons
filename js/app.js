@@ -120,21 +120,6 @@
 
     run(Exercises.list[0]);
 
-    /* ---------- Своя идея → форма заявки ---------- */
-    $('#ideaForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const txt = $('#ideaText').value.trim();
-      if (!txt) return;
-      const typeSel = $('#fType'); typeSel.value = 'Своя идея';
-      const planSel = $('#fPlan'); planSel.value = 'Пока не знаю';
-      $('#fMsg').value = 'Моя идея упражнения:\n' + txt;
-      form.dispatchEvent(new Event('input'));
-      Sound.play('correct');
-      toast('Идея добавлена в заявку — осталось указать имя и почту');
-      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => $('#fName').focus({ preventScroll: true }), 700);
-    });
-
     /* ---------- Тариф → форма ---------- */
     $$('[data-plan]').forEach(a => a.addEventListener('click', () => {
       const sel = $('#fPlan');

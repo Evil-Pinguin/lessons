@@ -19,7 +19,7 @@
   --glass-bg-strong: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.9);
   --glass-shadow: 0 20px 60px rgba(60, 70, 120, 0.14), 0 2px 6px rgba(60,70,120,.06), inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(255,255,255,.4);
-  --glass-blur: 28px;
+  --glass-blur: 14px;
 
   --ok: #22c55e;
   --bad: #ef4444;
@@ -114,8 +114,8 @@ p { margin: 0 0 1em; }
 .glass {
   position: relative;
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(170%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(170%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(130%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(130%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   border-radius: var(--radius);
@@ -140,7 +140,7 @@ p { margin: 0 0 1em; }
 /* карточки — стекло внутри стекла */
 .card-ico, .tile, .opt, .pair-item, .sort-card, .bin, .mem-back, .word-slot, .type span, .demo-task, .theme-opt, .mail-link,
 .field input, .field select, .field textarea, #editorText, .sort-pool {
-  backdrop-filter: blur(12px) saturate(160%); -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(8px) saturate(130%); -webkit-backdrop-filter: blur(8px) saturate(130%);
 }
 
 /* ---------- Кнопки ---------- */
@@ -164,7 +164,7 @@ p { margin: 0 0 1em; }
 .btn-hero:hover::after { transform: translateX(4px); }
 .btn-glass {
   background: var(--glass-bg-strong); border-color: var(--glass-border);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 16px rgba(60,70,120,.1);
 }
 .btn-ghost { background: transparent; border-color: var(--line); padding: .5rem .9rem; font-weight: 600; }
@@ -520,7 +520,7 @@ textarea { resize: vertical; }
   .hero { grid-template-columns: 1fr; }
   .grid-3, .steps, .types-grid, .pricing { grid-template-columns: repeat(2, 1fr); }
   .contact { grid-template-columns: 1fr; gap: 2rem; }
-  .nav { display: none; position: absolute; top: calc(100% + .5rem); left: 0; right: 0; flex-direction: column; padding: .75rem; border-radius: var(--radius); background: var(--glass-bg-strong); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
+  .nav { display: none; position: absolute; top: calc(100% + .5rem); left: 0; right: 0; flex-direction: column; padding: .75rem; border-radius: var(--radius); background: var(--glass-bg-strong); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
   .nav.open { display: flex; }
   .burger { display: inline-flex; }
   .hide-mobile { display: none; }
@@ -725,3 +725,48 @@ h1 .grad-text::after {
   .reveal { opacity: 1; transform: none; }
   .hero-text > * { opacity: 1; transform: none; }
 }
+
+/* =========================================================
+   Секция «Примеры упражнений» — своя цветовая гамма
+   (зелёная–бирюзовая зона, отличная от остального сайта)
+   ========================================================= */
+#demos {
+  --g1: #059669;   /* изумрудный  */
+  --g2: #0d9488;   /* бирюзовый   */
+  --g3: #0891b2;   /* циан        */
+  --gradient: linear-gradient(90deg, var(--g1) 0%, var(--g2) 50%, var(--g3) 100%);
+  position: relative;
+  isolation: isolate;
+}
+/* =========================================================
+   Мобильная производительность: меньше анимаций,
+   стекло легче — чтобы не лагало на телефонах
+   ========================================================= */
+@media (max-width: 768px) {
+  /* фоновые пятна — статичные, меньше их, blur полегче */
+  .blob { animation: none; filter: blur(45px); opacity: .45; }
+  .blob-4, .blob-5 { display: none; }
+  /* выключаем бесконечные анимации (перерисовка каждый кадр) */
+  .grad-text, h1 .grad-text { animation: none; }
+  .progress i { animation: none; }
+  .btn-hero, .price.featured { animation: none; }
+  /* стекло ещё легче */
+  .glass { backdrop-filter: blur(10px) saturate(120%); -webkit-backdrop-filter: blur(10px) saturate(120%); }
+  .confetti { box-shadow: none; }
+}
+
+/* лёгкое цветное свечение за секцией */
+#demos::before {
+  content: ""; position: absolute; inset: -3rem; z-index: -1; border-radius: 48px; pointer-events: none;
+  background:
+    radial-gradient(55% 55% at 12% 18%, color-mix(in srgb, var(--g1) 11%, transparent), transparent 70%),
+    radial-gradient(55% 55% at 88% 82%, color-mix(in srgb, var(--g3) 11%, transparent), transparent 70%);
+}
+/* тени/подсветки, где цвет был захардкожен — переводим на палитру секции */
+#demos .tab.active { box-shadow: 0 6px 18px color-mix(in srgb, var(--g2) 40%, transparent); }
+#demos .letter-btn { box-shadow: 0 6px 16px color-mix(in srgb, var(--g2) 35%, transparent); }
+#demos .mem-front { box-shadow: 0 6px 16px color-mix(in srgb, var(--g2) 35%, transparent); }
+#demos .pair-item.sel { background: color-mix(in srgb, var(--g1) 14%, transparent); }
+#demos .sort-card.picked { box-shadow: 0 0 0 4px color-mix(in srgb, var(--g1) 24%, transparent); }
+#demos .bin.over { background: color-mix(in srgb, var(--g1) 10%, transparent); }
+#demos .speak-btn { color: var(--g2); }
