@@ -18,28 +18,6 @@
     $('#year').textContent = new Date().getFullYear();
     const form = $('#contactForm');
 
-    /* ---------- Звук ---------- */
-    $('#soundToggle').addEventListener('click', () => {
-      Sound.setEnabled(!Sound.isEnabled());
-      if (Sound.isEnabled()) Sound.play('correct');
-      toast(Sound.isEnabled() ? 'Звук включён' : 'Звук выключен');
-    });
-
-    /* ---------- Голосовая озвучка (включается кнопкой) ---------- */
-    const voiceBtn = $('#voiceBtn');
-    const syncVoice = () => {
-      voiceBtn.setAttribute('aria-pressed', Sound.isVoiceOn());
-      voiceBtn.classList.toggle('active', Sound.isVoiceOn());
-      $('.voice-label', voiceBtn).textContent = Sound.isVoiceOn() ? 'Голос вкл' : 'Голос выкл';
-    };
-    voiceBtn.addEventListener('click', () => {
-      Sound.setVoice(!Sound.isVoiceOn());
-      syncVoice();
-      if (Sound.isVoiceOn()) { Sound.speak('Озвучка включена.'); toast('Голос включён: кнопки «прослушать» и задания читаются вслух'); }
-      else toast('Голос выключен');
-    });
-    syncVoice();
-
     /* ---------- Мобильное меню ---------- */
     const nav = $('#nav');
     $('#burger').addEventListener('click', () => nav.classList.toggle('open'));
@@ -109,7 +87,7 @@
       modal.hidden = false; ta.focus();
     });
     $$('[data-close]', modal).forEach(b => b.addEventListener('click', () => (modal.hidden = true)));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { modal.hidden = true; $('#themePanel').hidden = true; } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { modal.hidden = true; } });
     $('#editorSave').addEventListener('click', () => {
       const prev = Exercises.getData(current);
       const data = current.fromText(ta.value, prev);
@@ -119,12 +97,6 @@
     });
 
     run(Exercises.list[0]);
-
-    /* ---------- Тариф → форма ---------- */
-    $$('[data-plan]').forEach(a => a.addEventListener('click', () => {
-      const sel = $('#fPlan');
-      [...sel.options].forEach(o => { if (o.text.startsWith(a.dataset.plan)) sel.value = o.text; });
-    }));
 
     /* ---------- Форма → Supabase ---------- */
     const status = $('#formStatus'), submitBtn = $('#submitBtn');
@@ -141,7 +113,7 @@
       Object.entries(d).forEach(([k, v]) => { const f = form.elements[k]; if (f && f.type !== 'checkbox') f.value = v; });
     } catch {}
     form.addEventListener('input', () => {
-      const d = {}; ['name', 'email', 'age_group', 'exercise_type', 'plan', 'style', 'message'].forEach(k => (d[k] = form.elements[k].value));
+      const d = {}; ['name', 'contact', 'message'].forEach(k => (d[k] = form.elements[k].value));
       localStorage.setItem(DRAFT, JSON.stringify(d));
     });
 
@@ -150,9 +122,9 @@
     const fallbackRow = $('#formFallback');
     const isTouch = matchMedia('(pointer: coarse)').matches;
     const waUrl = p => 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(
-      `Заявка с сайта «Уроки+»\nИмя: ${p.name}\nОтветить на: ${p.email}\nВозраст детей: ${p.age_group}\nТип: ${p.exercise_type}\nТариф: ${p.plan}\nОформление: ${p.style}\n\n${p.message}`);
-    const mailUrl = p => 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(`Заявка: ${p.exercise_type} (${p.plan})`) + '&body=' + encodeURIComponent(
-      `Имя: ${p.name}\nEmail: ${p.email}\nВозраст детей: ${p.age_group}\nТип: ${p.exercise_type}\nТариф: ${p.plan}\nОформление: ${p.style}\n\n${p.message}`);
+      `Заявка с сайта «Уроки+»\nИмя: ${p.name}\nСвязаться: ${p.contact}\n\n${p.message}`);
+    const mailUrl = p => 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Заявка с сайта «Уроки+»: ' + p.name) + '&body=' + encodeURIComponent(
+      `Имя: ${p.name}\nСвязаться: ${p.contact}\n\n${p.message}`);
     function openFallback(p, err) {
       fallbackRow.hidden = false;
       $('#fbWa').href = waUrl(p);
@@ -169,24 +141,27 @@
       status.className = 'form-status'; status.textContent = '';
       fallbackRow.hidden = true;
       let valid = true;
-      ['fName', 'fEmail', 'fMsg'].forEach(id => {
+      ['fName', 'fContact', 'fMsg'].forEach(id => {
         const f = $('#' + id); const ok = f.checkValidity() && f.value.trim();
         f.classList.toggle('invalid', !ok); if (!ok) valid = false;
       });
       if (!$('#fAgree').checked) valid = false;
       if (!valid) { Sound.play('wrong'); status.textContent = 'Пожалуйста, заполните обязательные поля и поставьте галочку.'; status.classList.add('bad'); return; }
 
+      const contact = form.contact.value.trim();
       const payload = {
-        name: form.name.value.trim(), email: form.email.value.trim(), age_group: form.age_group.value,
-        exercise_type: form.exercise_type.value, plan: form.plan.value, style: form.style.value,
-        message: form.message.value.trim(), theme: document.documentElement.getAttribute('data-theme'),
+        name: form.name.value.trim(),
+        contact,
+        email: /^\S+@\S+\.\S+$/.test(contact) ? contact : '',
+        message: form.message.value.trim(),
+        theme: document.documentElement.getAttribute('data-theme'),
         page_url: location.href, user_agent: navigator.userAgent,
       };
 
       submitBtn.disabled = true; submitBtn.textContent = 'Отправляю…';
       const done = () => {
         Sound.play('fanfare');
-        status.textContent = 'Заявка отправлена! Отвечу на вашу почту в течение дня.'; status.classList.add('ok');
+        status.textContent = 'Заявка отправлена! Напишу вам в течение дня.'; status.classList.add('ok');
         form.reset(); localStorage.removeItem(DRAFT); fallbackRow.hidden = true;
       };
       try {

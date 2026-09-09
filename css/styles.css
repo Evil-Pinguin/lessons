@@ -773,3 +773,63 @@ h1 .grad-text::after {
 #demos .sort-card.picked { box-shadow: 0 0 0 4px color-mix(in srgb, var(--g1) 24%, transparent); }
 #demos .bin.over { background: color-mix(in srgb, var(--g1) 10%, transparent); }
 #demos .speak-btn { color: var(--g2); }
+
+/* =========================================================
+   По отзывам: авторские блоки, отзывы, CTA в песочнице
+   ========================================================= */
+
+/* аватар (шапка, герой) */
+.ava {
+  position: relative; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+  display: grid; place-items: center; background: var(--gradient); color: #fff;
+  font-family: var(--font-display); font-weight: 800; border: 2px solid rgba(255,255,255,.85);
+  box-shadow: 0 4px 12px rgba(120,100,220,.3);
+}
+.ava b { font-size: 1.05rem; }
+.ava img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ava-lg { width: 48px; height: 48px; }
+.ava-lg b { font-size: 1.25rem; }
+.header-author { display: flex; align-items: center; gap: .55rem; }
+.header-author-name { font-weight: 700; font-size: .92rem; }
+
+/* авторская карточка в герое */
+.hero-author { display: flex; align-items: center; gap: .8rem; padding: .65rem .95rem; border-radius: 18px; margin-bottom: 1.4rem; }
+.hero-author-text b { display: block; font-size: .98rem; }
+.hero-author-text small { color: var(--muted); font-size: .82rem; line-height: 1.35; display: block; }
+.hero-text > :nth-child(6) { animation-delay: .75s; }
+
+/* CTA после песочницы */
+.demo-cta { margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1.1rem; flex-wrap: wrap; }
+.demo-cta b { font-family: var(--font-display); font-size: 1.15rem; letter-spacing: -.01em; }
+
+/* кто делает */
+.me { display: grid; grid-template-columns: minmax(260px, 380px) 1fr; gap: 2.5rem; padding: clamp(1.5rem, 4vw, 2.5rem); align-items: center; }
+.me-photo {
+  position: relative; aspect-ratio: 1 / 1.05; border-radius: var(--radius); overflow: hidden;
+  background: var(--gradient); display: grid; place-items: center;
+  box-shadow: 0 20px 50px rgba(80,70,200,.25);
+}
+.me-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.me-photo-fallback { font-family: var(--font-display); font-size: 4.5rem; font-weight: 800; color: rgba(255,255,255,.92); }
+.me-text h2 { margin-bottom: .6rem; }
+.me-facts { list-style: none; padding: 0; margin: 1.1rem 0 1.6rem; display: flex; flex-direction: column; gap: .55rem; font-weight: 600; }
+
+/* тарифы — для кого */
+.plan-for { color: var(--muted); font-size: .9rem; margin: -.55rem 0 1.1rem; }
+
+/* отзывы */
+.review { display: flex; flex-direction: column; gap: 1.1rem; }
+.review-text { font-size: 1.02rem; line-height: 1.5; margin: 0; }
+.review-author { display: flex; align-items: center; gap: .7rem; margin-top: auto; }
+.review-ava {
+  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0;
+  background: var(--gradient); color: #fff; font-weight: 800; font-family: var(--font-display);
+}
+.review-who b { display: block; font-size: .95rem; }
+.review-who small { color: var(--muted); font-size: .82rem; }
+
+@media (max-width: 900px) {
+  .me { grid-template-columns: 1fr; text-align: center; }
+  .me-photo { max-width: 340px; margin: 0 auto; }
+  .me-facts { align-items: center; }
+}

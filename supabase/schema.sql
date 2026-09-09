@@ -71,3 +71,20 @@ create or replace view public.requests_inbox as
 -- 4. (Необязательно) Уведомление на почту через Database Webhook:
 --    Database → Webhooks → Create: table requests, event INSERT →
 --    HTTP POST на любой сервис (Make, Zapier, n8n, Telegram-бот).
+
+
+-- 5. Обновление 2026-09: форма из 3 полей (имя, контакт, тема)
+--    Если база уже создавалась ранее — запустите этот файл ещё раз:
+--    добавится поле contact, email станет необязательным. Ничего не сломается.
+alter table public.requests add column if not exists contact text;
+alter table public.requests alter column email drop not null;
+alter table public.requests drop constraint if exists requests_email_fmt;
+alter table public.requests add constraint requests_email_fmt
+  check (email is null or email ~* '^[^\s@]+@[^\s@]+\.[^\s@]+$');
+
+-- Вид обновлён: контакт (телефон/Telegram/email) в первой колонке
+create or replace view public.requests_inbox as
+  select id, created_at, status, name, coalesce(contact, email) as contact, email,
+         age_group, exercise_type, plan, style, left(message, 120) as preview, price
+  from public.requests
+  order by created_at desc;
