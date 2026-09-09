@@ -15,11 +15,11 @@
   --muted: #5b6070;
   --line: rgba(20, 20, 40, 0.08);
 
-  --glass-bg: rgba(255, 255, 255, 0.55);
-  --glass-bg-strong: rgba(255, 255, 255, 0.78);
-  --glass-border: rgba(255, 255, 255, 0.75);
-  --glass-shadow: 0 10px 40px rgba(60, 70, 120, 0.12), inset 0 1px 0 rgba(255,255,255,.9);
-  --glass-blur: 18px;
+  --glass-bg: rgba(255, 255, 255, 0.42);
+  --glass-bg-strong: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 20px 60px rgba(60, 70, 120, 0.14), 0 2px 6px rgba(60,70,120,.06), inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(255,255,255,.4);
+  --glass-blur: 28px;
 
   --ok: #22c55e;
   --bad: #ef4444;
@@ -95,13 +95,20 @@ p { margin: 0 0 1em; }
 @keyframes shimmer { to { background-position: 200% 0; } }
 
 /* ---------- Фоновые пятна ---------- */
-.bg-blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .5; animation: float 18s ease-in-out infinite alternate; }
-.blob-1 { width: 55vw; height: 55vw; background: var(--g1); top: -20vw; left: -15vw; }
-.blob-2 { width: 45vw; height: 45vw; background: var(--g2); top: 30vh; right: -15vw; animation-delay: -6s; }
-.blob-3 { width: 50vw; height: 50vw; background: var(--g3); bottom: -20vw; left: 20vw; animation-delay: -12s; }
-[data-theme="dark"] .blob { opacity: .28; }
-@keyframes float { from { transform: translate(0,0) scale(1); } to { transform: translate(6vw, 4vh) scale(1.12); } }
+.bg-blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: var(--bg); }
+/* центр остаётся чисто белым — градиенты только у краёв экрана */
+.bg-blobs::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 62% 70% at 50% 50%, var(--bg) 0%, var(--bg) 55%, transparent 100%);
+}
+.blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55; animation: float 20s ease-in-out infinite alternate; }
+.blob-1 { width: 42vw; height: 42vw; background: var(--g1); top: -22vw; left: -20vw; }
+.blob-2 { width: 40vw; height: 40vw; background: var(--g2); top: 20vh; right: -24vw; animation-delay: -7s; }
+.blob-3 { width: 44vw; height: 44vw; background: var(--g3); bottom: -26vw; left: -14vw; animation-delay: -13s; }
+.blob-4 { width: 36vw; height: 36vw; background: var(--g1); bottom: -20vw; right: -14vw; animation-delay: -4s; }
+.blob-5 { width: 34vw; height: 34vw; background: var(--g2); top: -20vw; right: 10vw; animation-delay: -16s; }
+[data-theme="dark"] .blob { opacity: .3; }
+@keyframes float { from { transform: translate(0,0) scale(1); } to { transform: translate(3vw, 3vh) scale(1.1); } }
 
 /* ---------- Жидкое стекло ---------- */
 .glass {
@@ -115,12 +122,26 @@ p { margin: 0 0 1em; }
   transition: background .4s ease, border-color .4s ease, transform .25s ease, box-shadow .25s ease;
 }
 .glass::before {
-  /* блик сверху — эффект жидкого стекла */
+  /* блик — эффект жидкого стекла */
   content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  background: linear-gradient(120deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,.25) 100%);
-  opacity: .8; mix-blend-mode: soft-light;
+  background:
+    linear-gradient(115deg, rgba(255,255,255,.85) 0%, rgba(255,255,255,.15) 30%, rgba(255,255,255,0) 50%, rgba(255,255,255,.35) 100%);
+  opacity: .9;
 }
-[data-theme="dark"] .glass::before { opacity: .35; }
+.glass::after {
+  /* внутреннее преломление по краю */
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.6), inset 0 12px 30px -12px rgba(255,255,255,1), inset 0 -20px 40px -30px var(--g2);
+  opacity: .8;
+}
+.glass > * { position: relative; z-index: 1; }
+[data-theme="dark"] .glass::before { opacity: .25; }
+[data-theme="dark"] .glass::after { box-shadow: inset 0 0 0 1px rgba(255,255,255,.1), inset 0 12px 30px -12px rgba(255,255,255,.15); }
+/* карточки — стекло внутри стекла */
+.card-ico, .tile, .opt, .pair-item, .sort-card, .bin, .mem-back, .word-slot, .type span, .demo-task, .theme-opt, .mail-link,
+.field input, .field select, .field textarea, #editorText, .sort-pool {
+  backdrop-filter: blur(12px) saturate(160%); -webkit-backdrop-filter: blur(12px) saturate(160%);
+}
 
 /* ---------- Кнопки ---------- */
 .btn {
@@ -157,6 +178,7 @@ p { margin: 0 0 1em; }
   width: min(1180px, 100% - 2.5rem); margin: .75rem auto 0;
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
   padding: .6rem .9rem .6rem 1.1rem; border-radius: 999px;
+  background: var(--glass-bg-strong);
 }
 .logo { display: flex; align-items: center; gap: .6rem; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
 .logo-mark {
@@ -171,6 +193,27 @@ p { margin: 0 0 1em; }
 .burger span { width: 18px; height: 2px; background: currentColor; border-radius: 2px; }
 body.sound-off .ico-on { display: none; }
 body:not(.sound-off) .ico-off { display: none; }
+
+/* ---------- Кнопка голоса ---------- */
+.voice-btn { gap: .4rem; padding: .55rem .95rem; }
+.voice-btn.active { color: #fff; background: var(--gradient); border-color: transparent; box-shadow: 0 6px 18px rgba(120,100,220,.35); }
+.voice-btn.active svg { animation: pulse-ico 1.6s ease-in-out infinite; }
+@keyframes pulse-ico { 50% { transform: scale(1.18); } }
+@media (max-width: 600px) { .voice-label { display: none; } .voice-btn { width: 42px; height: 42px; padding: 0; border-radius: 50%; justify-content: center; } }
+
+/* ---------- Своя идея ---------- */
+.idea { margin-top: 1.5rem; padding: 1.75rem; display: grid; grid-template-columns: auto 1fr 1.2fr; gap: 1.5rem; align-items: center; }
+.idea-ico { width: 88px; height: 88px; display: grid; place-items: center; border-radius: 24px; background: var(--glass-bg-strong); border: 1px solid var(--glass-border); }
+.idea-ico img { width: 72%; height: 72%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,.15)); animation: bob 3s ease-in-out infinite; }
+.idea-text h3 { margin-bottom: .3rem; }
+.idea-text p { color: var(--muted); margin: 0; }
+.idea-form { display: flex; flex-direction: column; gap: .7rem; }
+.idea-form textarea { font: inherit; color: var(--text); padding: .8rem 1rem; border-radius: var(--radius-sm); border: 1.5px solid var(--line); background: var(--glass-bg-strong); outline: none; resize: vertical; }
+.idea-form textarea:focus { border-color: var(--g1); box-shadow: 0 0 0 4px rgba(66,133,244,.15); }
+.idea-form .btn { align-self: flex-start; }
+@media (max-width: 960px) { .idea { grid-template-columns: 1fr; text-align: center; } .idea-ico { margin: 0 auto; } .idea-form .btn { align-self: center; } }
+
+.fact-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--gradient); margin-right: .6rem; vertical-align: 1px; }
 
 /* ---------- Герой ---------- */
 .hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: 3rem; align-items: center; padding: clamp(3rem, 8vw, 6rem) 0 3rem; }
@@ -204,21 +247,41 @@ body:not(.sound-off) .ico-off { display: none; }
 @keyframes pop { 50% { transform: scale(1.15); } }
 @keyframes shake { 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
 
+/* ---------- Картинки ---------- */
+.pic { width: 56px; height: 56px; object-fit: contain; display: inline-block; vertical-align: middle; filter: drop-shadow(0 4px 8px rgba(0,0,0,.12)); }
+.pic-sm { width: 44px; height: 44px; }
+.pic-md { width: 70%; height: 70%; }
+.pic-lg { width: 140px; height: 140px; }
+.card-ico img { width: 72%; height: 72%; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,.18)); }
+.tile img { width: 78%; height: 78%; object-fit: contain; pointer-events: none; transition: transform .2s; }
+.tile:hover img { transform: scale(1.08); }
+.tab img { width: 26px; height: 26px; object-fit: contain; margin-right: .45rem; vertical-align: -7px; }
+.type span img { width: 82%; height: 82%; object-fit: contain; }
+.word-pic { display: flex; justify-content: center; margin-bottom: 1rem; }
+.word-pic .pic { animation: bob 3s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-6px); } }
+.pair-item { display: flex; align-items: center; gap: .6rem; min-height: 60px; justify-content: center; font-size: 1.05rem; }
+.mem-back { padding: 8%; }
+.demo-result .big { display: flex; justify-content: center; margin-bottom: .75rem; }
+.demo-result .big .pic { animation: pop .6s; }
+.tf-fb { margin-top: 1rem; font-weight: 700; }
+.tf-fb.ok { color: var(--ok); } .tf-fb.bad { color: var(--bad); }
+
 /* ---------- Карточки ---------- */
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
 .card { padding: 1.6rem; }
 .card:hover { transform: translateY(-4px); }
 .card p { color: var(--muted); margin: 0; }
 .card-ico {
-  width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; font-size: 1.5rem; margin-bottom: 1rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  width: 64px; height: 64px; border-radius: 20px; display: grid; place-items: center; margin-bottom: 1rem;
+  border: 1px solid rgba(255,255,255,.9); box-shadow: 0 8px 20px rgba(60,70,120,.1), inset 0 1px 0 #fff;
 }
-.g1 { background: linear-gradient(135deg, #4285f4, #7aa8ff); }
-.g2 { background: linear-gradient(135deg, #9b72cb, #c9a6f5); }
-.g3 { background: linear-gradient(135deg, #d96570, #ff9aa2); }
-.g4 { background: linear-gradient(135deg, #22c55e, #86efac); }
-.g5 { background: linear-gradient(135deg, #f59e0b, #fcd34d); }
-.g6 { background: linear-gradient(135deg, #06b6d4, #67e8f9); }
+.g1 { background: linear-gradient(135deg, rgba(66,133,244,.18), rgba(255,255,255,.6)); }
+.g2 { background: linear-gradient(135deg, rgba(155,114,203,.18), rgba(255,255,255,.6)); }
+.g3 { background: linear-gradient(135deg, rgba(217,101,112,.18), rgba(255,255,255,.6)); }
+.g4 { background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(255,255,255,.6)); }
+.g5 { background: linear-gradient(135deg, rgba(245,158,11,.18), rgba(255,255,255,.6)); }
+.g6 { background: linear-gradient(135deg, rgba(6,182,212,.18), rgba(255,255,255,.6)); }
 
 .steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
 .steps li { padding: 1.6rem; }
@@ -238,9 +301,11 @@ body:not(.sound-off) .ico-off { display: none; }
 .demo-title { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
 .demo-actions { display: flex; gap: .4rem; flex-wrap: wrap; }
 .demo-task {
-  padding: 1rem 1.25rem; border-radius: var(--radius-sm); font-size: 1.15rem; font-weight: 700;
-  background: var(--glass-bg-strong); border-left: 5px solid; border-image: var(--gradient) 1; margin-bottom: 1.25rem;
+  padding: 1rem 1.25rem 1rem 1.5rem; border-radius: var(--radius-sm); font-size: 1.15rem; font-weight: 700;
+  background: var(--glass-bg-strong); border: 1px solid var(--glass-border); margin-bottom: 1.25rem; overflow: hidden;
 }
+.demo-task::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--gradient); }
+.demo-task { position: relative; }
 .demo-task small { display: block; font-weight: 500; color: var(--muted); font-size: .9rem; margin-top: .25rem; }
 .demo-body { position: relative; }
 .demo-result { text-align: center; padding: 2rem 1rem; animation: fadeUp .5s; }
@@ -346,7 +411,7 @@ body:not(.sound-off) .ico-off { display: none; }
 .types-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 .type { padding: 1.3rem; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: .9rem; align-items: center; }
 .type:hover { transform: translateY(-3px); }
-.type span { grid-row: 1 / 3; font-size: 2rem; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 16px; background: var(--glass-bg-strong); }
+.type span { grid-row: 1 / 3; width: 62px; height: 62px; display: grid; place-items: center; border-radius: 18px; background: var(--glass-bg-strong); border: 1px solid var(--glass-border); }
 .type b { font-size: 1.02rem; }
 .type small { color: var(--muted); }
 .type i { grid-column: 2; font-style: normal; font-weight: 800; margin-top: .4rem; background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }

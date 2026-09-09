@@ -8,6 +8,11 @@
   const shuffle = arr => arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(x => x[1]);
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  // «img:hero/apple» → картинка из папки img/, иначе — текст
+  const rich = (s, cls = 'pic') => {
+    const m = String(s).trim().match(/^img:([\w\/-]+)$/);
+    return m ? `<img src="img/${m[1]}.png" alt="" class="${cls}" draggable="false" />` : esc(s);
+  };
 
   /* ----------------- Хранилище ----------------- */
   function load(id, def) {
@@ -22,10 +27,10 @@
     confetti();
     api.body.innerHTML = '';
     const pct = total ? Math.round((score / total) * 100) : 100;
-    const emoji = pct === 100 ? '🏆' : pct >= 70 ? '🌟' : '👍';
+    const pic = pct === 100 ? 'ui/trophy' : pct >= 70 ? 'ui/star' : 'ui/check';
     const title = pct === 100 ? 'Отлично! Всё верно!' : pct >= 70 ? 'Молодец!' : 'Хорошая попытка!';
-    api.result.innerHTML = `<div class="big">${emoji}</div><h3>${title}</h3><p>${text || `Результат: <b>${score} из ${total}</b> (${pct}%)`}</p>
-      <button class="btn btn-primary" id="againBtn">▶ Пройти ещё раз</button>`;
+    api.result.innerHTML = `<div class="big"><img src="img/${pic}.png" alt="" class="pic pic-lg" /></div><h3>${title}</h3><p>${text || `Результат: <b>${score} из ${total}</b> (${pct}%)`}</p>
+      <button class="btn btn-primary" id="againBtn">Пройти ещё раз</button>`;
     api.result.hidden = false;
     api.result.querySelector('#againBtn').addEventListener('click', () => { Sound.play('click'); api.restart(); });
     Sound.speak(title);
@@ -51,7 +56,7 @@
      1. Викторина
      ========================================================= */
   const quiz = {
-    id: 'quiz', title: '🧠 Викторина', emoji: '🧠',
+    id: 'quiz', title: 'Викторина', icon: 'ui/brain',
     def: {
       task: 'Прочитай вопрос и выбери правильный ответ.',
       sub: 'Окружающий мир, 1–2 класс',
@@ -107,13 +112,13 @@
      2. Найди пару
      ========================================================= */
   const pairs = {
-    id: 'pairs', title: '🔗 Найди пару', emoji: '🔗',
+    id: 'pairs', title: 'Найди пару', icon: 'ui/link',
     def: {
       task: 'Соедини слово с подходящей картинкой.',
       sub: 'Английский язык, дошкольники / 1 класс',
-      items: [['Cat', '🐱'], ['Dog', '🐶'], ['Apple', '🍎'], ['Sun', '☀️'], ['Fish', '🐟'], ['Car', '🚗']],
+      items: [['Cat', 'img:pairs/cat'], ['Dog', 'img:pairs/dog'], ['Apple', 'img:pairs/apple'], ['Sun', 'img:pairs/sun'], ['Fish', 'img:pairs/fish'], ['Car', 'img:pairs/car']],
     },
-    hint: 'Первая строка — задание. Далее по одной паре на строке:\nлево = право (можно слова, эмодзи, числа, примеры: 2+2 = 4)',
+    hint: 'Первая строка — задание. Далее по одной паре на строке:\nлево = право (слова, числа, примеры: 2+2 = 4).\nКартинки из набора: img:pairs/cat, dog, apple, sun, fish, car',
     toText: d => [d.task, ...d.items.map(p => `${p[0]} = ${p[1]}`)].join('\n'),
     fromText(t, prev) {
       const lines = t.split('\n').map(s => s.trim()).filter(Boolean);
@@ -127,7 +132,7 @@
       const wrap = el('div', 'pairs');
       const left = el('div', 'pairs-col'), right = el('div', 'pairs-col');
       const mk = (text, side, idx) => {
-        const b = el('button', 'pair-item', esc(text));
+        const b = el('button', 'pair-item', rich(text, 'pic pic-sm'));
         b.dataset.side = side; b.dataset.idx = idx;
         b.addEventListener('click', () => {
           if (b.disabled) return;
@@ -155,13 +160,13 @@
      3. Собери слово
      ========================================================= */
   const word = {
-    id: 'word', title: '🔤 Собери слово', emoji: '🔤',
+    id: 'word', title: 'Собери слово', icon: 'ui/abc',
     def: {
       task: 'Посмотри на картинку и собери слово из букв.',
       sub: 'Обучение грамоте, дошкольники',
-      items: [['🐘', 'СЛОН'], ['🌸', 'ЦВЕТОК'], ['🏠', 'ДОМ'], ['🚀', 'РАКЕТА'], ['🐸', 'ЛЯГУШКА']],
+      items: [['img:word/elephant', 'СЛОН'], ['img:word/flower', 'ЦВЕТОК'], ['img:word/house', 'ДОМ'], ['img:word/rocket', 'РАКЕТА'], ['img:word/frog', 'ЛЯГУШКА'], ['img:word/bear', 'МЕДВЕДЬ']],
     },
-    hint: 'Первая строка — задание. Далее на каждой строке:\nподсказка (эмодзи или слово) = СЛОВО',
+    hint: 'Первая строка — задание. Далее на каждой строке:\nподсказка = СЛОВО\nПодсказка — слово или картинка: img:word/elephant, flower, house, rocket, frog, bear',
     toText: d => [d.task, ...d.items.map(p => `${p[0]} = ${p[1]}`)].join('\n'),
     fromText(t, prev) {
       const lines = t.split('\n').map(s => s.trim()).filter(Boolean);
@@ -178,7 +183,7 @@
         const [hint, w] = d.items[i];
         const letters = w.split('');
         let pos = 0;
-        api.body.appendChild(el('div', 'word-emoji', esc(hint)));
+        api.body.appendChild(el('div', 'word-pic', rich(hint, 'pic pic-lg')));
         const target = el('div', 'word-target');
         letters.forEach(() => target.appendChild(el('div', 'word-slot', '')));
         api.body.appendChild(target);
@@ -207,14 +212,14 @@
      4. Распредели по группам (drag & drop + tap)
      ========================================================= */
   const sort = {
-    id: 'sort', title: '🗂️ Распредели по группам', emoji: '🗂️',
+    id: 'sort', title: 'Распредели по группам', icon: 'ui/folder',
     def: {
       task: 'Перетащи каждую карточку в нужную группу.',
       sub: 'Окружающий мир, 2–3 класс',
       groups: [
-        { name: '🥕 Овощи', items: ['Морковь', 'Огурец', 'Капуста', 'Свёкла'] },
-        { name: '🍓 Фрукты', items: ['Яблоко', 'Банан', 'Груша', 'Апельсин'] },
-        { name: '🌰 Ягоды', items: ['Клубника', 'Малина', 'Черника'] },
+        { name: 'Овощи', items: ['Морковь', 'Огурец', 'Капуста', 'Свёкла'] },
+        { name: 'Фрукты', items: ['Яблоко', 'Банан', 'Груша', 'Апельсин'] },
+        { name: 'Ягоды', items: ['Клубника', 'Малина', 'Черника'] },
       ],
     },
     hint: 'Первая строка — задание. Далее каждая группа на своей строке:\nНазвание группы : элемент1, элемент2, элемент3',
@@ -273,7 +278,7 @@
      5. Верно / неверно
      ========================================================= */
   const truefalse = {
-    id: 'truefalse', title: '✅ Верно / неверно', emoji: '✅',
+    id: 'truefalse', title: 'Верно / неверно', icon: 'ui/check',
     def: {
       task: 'Прочитай утверждение и реши: верно оно или нет.',
       sub: 'Математика, 2–3 класс',
@@ -300,13 +305,13 @@
           const b = el('button', 'tf-btn ' + cls, label);
           b.addEventListener('click', () => {
             [...btns.children].forEach(x => { x.disabled = true; if (x !== b) x.classList.add('dim'); });
-            if (val === v) { score++; Sound.play('correct'); card.appendChild(el('p', '', '✔ Верно!')); }
-            else { Sound.play('wrong'); card.appendChild(el('p', '', `✘ Правильный ответ: <b>${v ? 'Верно' : 'Неверно'}</b>`)); }
+            if (val === v) { score++; Sound.play('correct'); card.appendChild(el('p', 'tf-fb ok', 'Верно!')); }
+            else { Sound.play('wrong'); card.appendChild(el('p', 'tf-fb bad', `Правильный ответ: <b>${v ? 'Верно' : 'Неверно'}</b>`)); }
             setTimeout(() => { i++; step(); }, 1000);
           });
           return b;
         };
-        btns.append(mk('👍 Верно', true, 'tf-true'), mk('👎 Неверно', false, 'tf-false'));
+        btns.append(mk('Верно', true, 'tf-true'), mk('Неверно', false, 'tf-false'));
         card.appendChild(btns); api.body.appendChild(card);
         Sound.speak(s);
       };
@@ -318,13 +323,13 @@
      6. Мемори
      ========================================================= */
   const memory = {
-    id: 'memory', title: '🃏 Мемори', emoji: '🃏',
+    id: 'memory', title: 'Мемори', icon: 'ui/cards',
     def: {
       task: 'Найди все одинаковые пары карточек.',
       sub: 'Внимание и память, дошкольники',
-      items: ['🦊', '🐼', '🦁', '🐸', '🦋', '🐙'],
+      items: ['img:memory/fox', 'img:memory/panda', 'img:memory/lion', 'img:memory/frog', 'img:memory/butterfly', 'img:memory/octopus'],
     },
-    hint: 'Первая строка — задание. Вторая — карточки через запятую (эмодзи или короткие слова), 4–8 штук:\n🦊, 🐼, 🦁, 🐸',
+    hint: 'Первая строка — задание. Вторая — карточки через запятую (короткие слова, числа или картинки), 4–8 штук.\nКартинки: img:memory/fox, panda, lion, frog, butterfly, octopus',
     toText: d => [d.task, d.items.join(', ')].join('\n'),
     fromText(t, prev) {
       const lines = t.split('\n').map(s => s.trim()).filter(Boolean);
@@ -340,7 +345,7 @@
       const cards = shuffle([...d.items, ...d.items]);
       if (cards.length > 12) grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
       cards.forEach(v => {
-        const c = el('button', 'mem-card', `<div class="mem-face mem-front">?</div><div class="mem-face mem-back">${esc(v)}</div>`);
+        const c = el('button', 'mem-card', `<div class="mem-face mem-front">?</div><div class="mem-face mem-back">${rich(v, 'pic pic-md')}</div>`);
         c.dataset.v = v;
         c.addEventListener('click', () => {
           if (lock || c.classList.contains('flip')) return;

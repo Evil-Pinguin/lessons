@@ -16,13 +16,29 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     $('#year').textContent = new Date().getFullYear();
+    const form = $('#contactForm');
 
     /* ---------- Звук ---------- */
     $('#soundToggle').addEventListener('click', () => {
       Sound.setEnabled(!Sound.isEnabled());
       if (Sound.isEnabled()) Sound.play('correct');
-      toast(Sound.isEnabled() ? '🔊 Звук включён' : '🔇 Звук выключен');
+      toast(Sound.isEnabled() ? 'Звук включён' : 'Звук выключен');
     });
+
+    /* ---------- Голосовая озвучка (включается кнопкой) ---------- */
+    const voiceBtn = $('#voiceBtn');
+    const syncVoice = () => {
+      voiceBtn.setAttribute('aria-pressed', Sound.isVoiceOn());
+      voiceBtn.classList.toggle('active', Sound.isVoiceOn());
+      $('.voice-label', voiceBtn).textContent = Sound.isVoiceOn() ? 'Голос вкл' : 'Голос выкл';
+    };
+    voiceBtn.addEventListener('click', () => {
+      Sound.setVoice(!Sound.isVoiceOn());
+      syncVoice();
+      if (Sound.isVoiceOn()) { Sound.speak('Озвучка включена. Задания теперь будут читаться вслух.'); toast('Голосовая озвучка включена'); }
+      else toast('Голосовая озвучка выключена');
+    });
+    syncVoice();
 
     /* ---------- Мобильное меню ---------- */
     const nav = $('#nav');
@@ -37,17 +53,17 @@
     /* ---------- Мини-демо в герое ---------- */
     (function heroDemo() {
       const grid = $('#heroGrid'), scoreEl = $('#heroScore');
-      const items = [['🍎', 1], ['🚗', 0], ['🍌', 1], ['📚', 0], ['🍇', 1], ['⚽', 0], ['🍓', 1], ['🐱', 0]];
+      const items = [['apple', 1], ['car', 0], ['banana', 1], ['books', 0], ['grapes', 1], ['ball', 0], ['strawberry', 1], ['cat', 0]];
       let score = 0;
       const build = () => {
         grid.innerHTML = ''; score = 0; scoreEl.textContent = '0 / 4';
         items.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(x => x[1]).forEach(([e, ok]) => {
-          const t = document.createElement('button'); t.className = 'tile'; t.textContent = e;
+          const t = document.createElement('button'); t.className = 'tile'; t.innerHTML = `<img src="img/hero/${e}.png" alt="" draggable="false" />`;
           t.addEventListener('click', () => {
             if (t.classList.contains('ok')) return;
             if (ok) {
               t.classList.add('ok'); score++; scoreEl.textContent = `${score} / 4`; Sound.play('correct');
-              if (score === 4) { Sound.play('fanfare'); toast('🎉 Все фрукты найдены!'); setTimeout(build, 2500); }
+              if (score === 4) { Sound.play('fanfare'); toast('Все фрукты найдены!'); setTimeout(build, 2500); }
             } else { t.classList.add('bad'); Sound.play('wrong'); setTimeout(() => t.classList.remove('bad'), 450); }
           });
           grid.appendChild(t);
@@ -67,7 +83,7 @@
       current = ex;
       const d = Exercises.getData(ex);
       stage.title.textContent = ex.title;
-      stage.task.innerHTML = `📌 ${escapeHtml(d.task)}<small>${escapeHtml(d.sub || '')}</small>`;
+      stage.task.innerHTML = `${escapeHtml(d.task)}<small>${escapeHtml(d.sub || '')}</small>`;
       stage.result.hidden = true; stage.result.innerHTML = '';
       ex.render(api, d);
     }
@@ -79,10 +95,10 @@
     }));
     $('#demoRestart').addEventListener('click', () => run(current));
     $('#demoSpeak').addEventListener('click', () => {
-      if (!Sound.isEnabled()) return toast('Включите звук кнопкой в шапке 🔊');
-      Sound.speak(Exercises.getData(current).task);
+      // явное нажатие — озвучиваем всегда, даже если общий голос выключен
+      Sound.speak(Exercises.getData(current).task, { force: true });
     });
-    $('#demoReset').addEventListener('click', () => { Exercises.reset(current); run(current); toast('↺ Исходный вариант восстановлен'); });
+    $('#demoReset').addEventListener('click', () => { Exercises.reset(current); run(current); toast('Исходный вариант восстановлен'); });
 
     /* ---------- Редактор ---------- */
     const modal = $('#editorModal'), ta = $('#editorText');
@@ -99,10 +115,25 @@
       const data = current.fromText(ta.value, prev);
       Exercises.setData(current, data);
       modal.hidden = true; run(current);
-      Sound.play('correct'); toast('💾 Сохранено в вашем браузере');
+      Sound.play('correct'); toast('Сохранено в вашем браузере');
     });
 
     run(Exercises.list[0]);
+
+    /* ---------- Своя идея → форма заявки ---------- */
+    $('#ideaForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const txt = $('#ideaText').value.trim();
+      if (!txt) return;
+      const typeSel = $('#fType'); typeSel.value = 'Своя идея';
+      const planSel = $('#fPlan'); planSel.value = 'Пока не знаю';
+      $('#fMsg').value = 'Моя идея упражнения:\n' + txt;
+      form.dispatchEvent(new Event('input'));
+      Sound.play('correct');
+      toast('Идея добавлена в заявку — осталось указать имя и почту');
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => $('#fName').focus({ preventScroll: true }), 700);
+    });
 
     /* ---------- Тариф → форма ---------- */
     $$('[data-plan]').forEach(a => a.addEventListener('click', () => {
@@ -111,7 +142,7 @@
     }));
 
     /* ---------- Форма → Supabase ---------- */
-    const form = $('#contactForm'), status = $('#formStatus'), submitBtn = $('#submitBtn');
+    const status = $('#formStatus'), submitBtn = $('#submitBtn');
     let supa = null;
     const cfg = window.SUPABASE_CONFIG || {};
     if (cfg.url && cfg.anonKey && window.supabase) {
@@ -153,7 +184,7 @@
           const { error } = await supa.from(cfg.table || 'requests').insert(payload);
           if (error) throw error;
           Sound.play('fanfare');
-          status.textContent = '✅ Заявка отправлена! Отвечу на вашу почту в течение дня.'; status.classList.add('ok');
+          status.textContent = 'Заявка отправлена! Отвечу на вашу почту в течение дня.'; status.classList.add('ok');
           form.reset(); localStorage.removeItem(DRAFT);
         } else {
           // Supabase не настроен — запасной вариант: письмо

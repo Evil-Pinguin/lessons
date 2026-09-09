@@ -17,6 +17,8 @@
     <span class="blob blob-1"></span>
     <span class="blob blob-2"></span>
     <span class="blob blob-3"></span>
+    <span class="blob blob-4"></span>
+    <span class="blob blob-5"></span>
   </div>
 
   <!-- ===== Шапка ===== -->
@@ -36,6 +38,10 @@
       <button class="icon-btn" id="soundToggle" title="Звук вкл/выкл" aria-label="Переключить звук">
         <svg class="ico-on" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
         <svg class="ico-off" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M16.5 12A4.5 4.5 0 0 0 14 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.8 8.8 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
+      </button>
+      <button class="btn btn-glass btn-sm voice-btn" id="voiceBtn" title="Озвучивать задания голосом" aria-pressed="false">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg>
+        <span class="voice-label">Голос выкл</span>
       </button>
       <button class="icon-btn" id="themeBtn" title="Оформление" aria-label="Выбрать оформление" aria-haspopup="dialog">
         <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.04 10 9c0 3.31-2.69 6-6 6h-1.77c-.28 0-.5.22-.5.5 0 .12.05.23.13.33.41.47.64 1.06.64 1.67A2.5 2.5 0 0 1 12 22zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5a.54.54 0 0 0-.14-.35c-.41-.46-.63-1.05-.63-1.65a2.5 2.5 0 0 1 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7z"/><circle cx="6.5" cy="11.5" r="1.5" fill="currentColor"/><circle cx="9.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="14.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="17.5" cy="11.5" r="1.5" fill="currentColor"/></svg>
@@ -71,7 +77,7 @@
           <span class="badge">Мини-демо · нажимайте!</span>
           <span class="score" id="heroScore">0 / 4</span>
         </div>
-        <p class="hero-card-q">Найди все <b>фрукты</b> 🍎</p>
+        <p class="hero-card-q">Найди все <b>фрукты</b></p>
         <div class="hero-grid" id="heroGrid"></div>
         <p class="hero-card-hint">Каждое нажатие — со звуком. Так это работает у детей.</p>
       </div>
@@ -86,32 +92,32 @@
       </div>
       <div class="grid-3">
         <article class="card glass">
-          <div class="card-ico g1">📝</div>
+          <div class="card-ico g1"><img src="img/ui/notebook.png" alt="" class="" loading="lazy" /></div>
           <h3>Чёткая формулировка</h3>
           <p>Текст задачи крупно и просто: «Собери слово», «Найди пару», «Распредели по группам». Ребёнок понимает, что делать, с первой секунды.</p>
         </article>
         <article class="card glass">
-          <div class="card-ico g2">🔊</div>
+          <div class="card-ico g2"><img src="img/ui/speaker.png" alt="" class="" loading="lazy" /></div>
           <h3>Звук и отклик</h3>
           <p>Приятные сигналы за правильный ответ, мягкая подсказка при ошибке и фанфары в конце. Можно озвучить задание голосом.</p>
         </article>
         <article class="card glass">
-          <div class="card-ico g3">🎨</div>
+          <div class="card-ico g3"><img src="img/ui/palette.png" alt="" class="" loading="lazy" /></div>
           <h3>Ваш стиль</h3>
           <p>Светлая, тёмная или красочная тема — или ваш собственный вариант в цветах школы, группы или праздника.</p>
         </article>
         <article class="card glass">
-          <div class="card-ico g4">💾</div>
+          <div class="card-ico g4"><img src="img/ui/save.png" alt="" class="" loading="lazy" /></div>
           <h3>Редактируется</h3>
           <p>Вопросы и варианты можно менять самостоятельно — изменения сохраняются локально в браузере. Не нужен программист.</p>
         </article>
         <article class="card glass">
-          <div class="card-ico g5">💻</div>
+          <div class="card-ico g5"><img src="img/ui/laptop.png" alt="" class="" loading="lazy" /></div>
           <h3>Работает везде</h3>
           <p>Интерактивная доска, проектор, ноутбук, планшет, телефон. Не требует установки — открывается по ссылке.</p>
         </article>
         <article class="card glass">
-          <div class="card-ico g6">⚡</div>
+          <div class="card-ico g6"><img src="img/ui/bolt.png" alt="" class="" loading="lazy" /></div>
           <h3>Быстро</h3>
           <p>Срок — 2–3 дня. Пришлите тему, возраст детей и материал (слова, картинки, вопросы) — остальное сделаю я.</p>
         </article>
@@ -140,22 +146,22 @@
       </div>
 
       <div class="demo-tabs glass" role="tablist">
-        <button class="tab active" data-tab="quiz" role="tab">🧠 Викторина</button>
-        <button class="tab" data-tab="pairs" role="tab">🔗 Найди пару</button>
-        <button class="tab" data-tab="word" role="tab">🔤 Собери слово</button>
-        <button class="tab" data-tab="sort" role="tab">🗂️ Распредели</button>
-        <button class="tab" data-tab="truefalse" role="tab">✅ Верно / неверно</button>
-        <button class="tab" data-tab="memory" role="tab">🃏 Мемори</button>
+        <button class="tab active" data-tab="quiz" role="tab"><img src="img/ui/brain.png" alt="" class="" loading="lazy" />Викторина</button>
+        <button class="tab" data-tab="pairs" role="tab"><img src="img/ui/link.png" alt="" class="" loading="lazy" />Найди пару</button>
+        <button class="tab" data-tab="word" role="tab"><img src="img/ui/abc.png" alt="" class="" loading="lazy" />Собери слово</button>
+        <button class="tab" data-tab="sort" role="tab"><img src="img/ui/folder.png" alt="" class="" loading="lazy" />Распредели</button>
+        <button class="tab" data-tab="truefalse" role="tab"><img src="img/ui/check.png" alt="" class="" loading="lazy" />Верно / неверно</button>
+        <button class="tab" data-tab="memory" role="tab"><img src="img/ui/cards.png" alt="" class="" loading="lazy" />Мемори</button>
       </div>
 
       <div class="demo-stage glass" id="demoStage">
         <div class="demo-toolbar">
           <div class="demo-title" id="demoTitle"></div>
           <div class="demo-actions">
-            <button class="btn btn-ghost btn-sm" id="demoSpeak" title="Озвучить задание">🔈 Озвучить</button>
-            <button class="btn btn-ghost btn-sm" id="demoEdit">✏️ Редактировать</button>
-            <button class="btn btn-ghost btn-sm" id="demoReset" title="Вернуть исходный вариант">↺ Сбросить</button>
-            <button class="btn btn-ghost btn-sm" id="demoRestart">▶ Заново</button>
+            <button class="btn btn-ghost btn-sm" id="demoSpeak" title="Озвучить задание голосом">Озвучить</button>
+            <button class="btn btn-ghost btn-sm" id="demoEdit">Редактировать</button>
+            <button class="btn btn-ghost btn-sm" id="demoReset" title="Вернуть исходный вариант">Сбросить</button>
+            <button class="btn btn-ghost btn-sm" id="demoRestart">Заново</button>
           </div>
         </div>
         <div class="demo-task" id="demoTask"></div>
@@ -172,15 +178,27 @@
         <p>Для дошкольников — крупные картинки, минимум текста, озвучка. Для школьников — тексты, формулы, таблицы, таймер и подсчёт баллов.</p>
       </div>
       <div class="types-grid">
-        <div class="type glass"><span>🧠</span><b>Викторина</b><small>Вопрос — 2–4 варианта ответа, с картинками или без</small><i>от 500 ₽</i></div>
-        <div class="type glass"><span>🔗</span><b>Найди пару</b><small>Слово — картинка, термин — определение, число — пример</small><i>от 500 ₽</i></div>
-        <div class="type glass"><span>🔤</span><b>Собери слово / предложение</b><small>Буквы или слова в правильном порядке</small><i>от 600 ₽</i></div>
-        <div class="type glass"><span>🗂️</span><b>Распредели по группам</b><small>Перетаскивание карточек в корзины</small><i>от 700 ₽</i></div>
-        <div class="type glass"><span>✅</span><b>Верно / неверно</b><small>Быстрые утверждения на закрепление</small><i>от 500 ₽</i></div>
-        <div class="type glass"><span>🃏</span><b>Мемори</b><small>Найди одинаковые карточки — память и внимание</small><i>от 600 ₽</i></div>
-        <div class="type glass"><span>✏️</span><b>Вставь пропущенное</b><small>Пропуски в тексте, буквы в словах</small><i>от 700 ₽</i></div>
-        <div class="type glass"><span>🧩</span><b>Кроссворд / пазл</b><small>Собери картинку или разгадай слова</small><i>от 900 ₽</i></div>
-        <div class="type glass"><span>🗺️</span><b>Своя идея</b><small>Квест, лента времени, карта, лабиринт — обсудим</small><i>по договорённости</i></div>
+        <div class="type glass"><span><img src="img/ui/brain.png" alt="" class="" loading="lazy" /></span><b>Викторина</b><small>Вопрос — 2–4 варианта ответа, с картинками или без</small><i>от 500 ₽</i></div>
+        <div class="type glass"><span><img src="img/ui/link.png" alt="" class="" loading="lazy" /></span><b>Найди пару</b><small>Слово — картинка, термин — определение, число — пример</small><i>от 500 ₽</i></div>
+        <div class="type glass"><span><img src="img/ui/abc.png" alt="" class="" loading="lazy" /></span><b>Собери слово / предложение</b><small>Буквы или слова в правильном порядке</small><i>от 600 ₽</i></div>
+        <div class="type glass"><span><img src="img/ui/folder.png" alt="" class="" loading="lazy" /></span><b>Распредели по группам</b><small>Перетаскивание карточек в корзины</small><i>от 700 ₽</i></div>
+        <div class="type glass"><span><img src="img/ui/check.png" alt="" class="" loading="lazy" /></span><b>Верно / неверно</b><small>Быстрые утверждения на закрепление</small><i>от 500 ₽</i></div>
+        <div class="type glass"><span><img src="img/ui/cards.png" alt="" class="" loading="lazy" /></span><b>Мемори</b><small>Найди одинаковые карточки — память и внимание</small><i>от 600 ₽</i></div>
+        <div class="type glass"><span><img src="img/ui/pencil.png" alt="" class="" loading="lazy" /></span><b>Вставь пропущенное</b><small>Пропуски в тексте, буквы в словах</small><i>от 700 ₽</i></div>
+        <div class="type glass"><span><img src="img/ui/puzzle.png" alt="" class="" loading="lazy" /></span><b>Кроссворд / пазл</b><small>Собери картинку или разгадай слова</small><i>от 900 ₽</i></div>
+        <div class="type glass"><span><img src="img/ui/map.png" alt="" class="" loading="lazy" /></span><b>Квест / карта / лента времени</b><small>Путешествие по станциям, интерактивная карта, хронология</small><i>от 1 200 ₽</i></div>
+      </div>
+
+      <div class="idea glass" id="idea">
+        <div class="idea-ico"><img src="img/ui/bulb.png" alt="" class="" loading="lazy" /></div>
+        <div class="idea-text">
+          <h3>Есть своя идея?</h3>
+          <p>Опишите, каким вы видите упражнение — механику, тему, возраст детей. Я посмотрю, можно ли это сделать, и отвечу с оценкой по срокам и цене.</p>
+        </div>
+        <form class="idea-form" id="ideaForm">
+          <textarea id="ideaText" rows="3" placeholder="Например: дети слушают звук животного и выбирают его на картинке; или лабиринт, где на развилках нужно решить пример…" required></textarea>
+          <button type="submit" class="btn btn-primary">Предложить идею</button>
+        </form>
       </div>
     </section>
 
@@ -243,9 +261,9 @@
             zloipingvin2000@gmail.com
           </a>
           <ul class="contact-facts">
-            <li>⏱ Срок: 2–3 дня</li>
-            <li>💰 От 500 ₽</li>
-            <li>👶 Дошкольники и школьники</li>
+            <li><i class="fact-dot"></i>Срок: 2–3 дня</li>
+            <li><i class="fact-dot"></i>От 500 ₽</li>
+            <li><i class="fact-dot"></i>Дошкольники и школьники</li>
           </ul>
         </div>
         <form class="contact-form" id="contactForm" novalidate>

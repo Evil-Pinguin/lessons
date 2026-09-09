@@ -5,8 +5,11 @@
    ========================================================= */
 (function () {
   const KEY = 'lessons_sound';
+  const KEY_VOICE = 'lessons_voice';
   let ctx = null;
   let enabled = localStorage.getItem(KEY) !== 'off';
+  // Голос ВЫКЛЮЧЕН по умолчанию — включается только после нажатия кнопки
+  let voiceOn = localStorage.getItem(KEY_VOICE) === 'on';
 
   function getCtx() {
     if (!ctx) {
@@ -55,8 +58,9 @@
   }
 
   /* ---- Озвучка текста ---- */
-  function speak(text) {
-    if (!enabled || !('speechSynthesis' in window) || !text) return;
+  function speak(text, { force = false } = {}) {
+    if (!force && (!enabled || !voiceOn)) return;
+    if (!('speechSynthesis' in window) || !text) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'ru-RU';
@@ -75,6 +79,16 @@
     if (!enabled && 'speechSynthesis' in window) window.speechSynthesis.cancel();
   }
 
-  window.Sound = { play, speak, setEnabled, isEnabled: () => enabled };
-  document.addEventListener('DOMContentLoaded', () => document.body.classList.toggle('sound-off', !enabled));
+  function setVoice(v) {
+    voiceOn = !!v;
+    localStorage.setItem(KEY_VOICE, voiceOn ? 'on' : 'off');
+    document.body.classList.toggle('voice-on', voiceOn);
+    if (!voiceOn && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+  }
+
+  window.Sound = { play, speak, setEnabled, isEnabled: () => enabled, setVoice, isVoiceOn: () => voiceOn };
+  document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.toggle('sound-off', !enabled);
+    document.body.classList.toggle('voice-on', voiceOn);
+  });
 })();
