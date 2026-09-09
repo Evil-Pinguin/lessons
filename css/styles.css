@@ -19,7 +19,7 @@
   --glass-bg-strong: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.9);
   --glass-shadow: 0 20px 60px rgba(60, 70, 120, 0.14), 0 2px 6px rgba(60,70,120,.06), inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(255,255,255,.4);
-  --glass-blur: 28px;
+  --glass-blur: 14px;
 
   --ok: #22c55e;
   --bad: #ef4444;
@@ -114,8 +114,8 @@ p { margin: 0 0 1em; }
 .glass {
   position: relative;
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(170%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(170%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(130%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(130%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   border-radius: var(--radius);
@@ -140,7 +140,7 @@ p { margin: 0 0 1em; }
 /* карточки — стекло внутри стекла */
 .card-ico, .tile, .opt, .pair-item, .sort-card, .bin, .mem-back, .word-slot, .type span, .demo-task, .theme-opt, .mail-link,
 .field input, .field select, .field textarea, #editorText, .sort-pool {
-  backdrop-filter: blur(12px) saturate(160%); -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(8px) saturate(130%); -webkit-backdrop-filter: blur(8px) saturate(130%);
 }
 
 /* ---------- Кнопки ---------- */
@@ -164,7 +164,7 @@ p { margin: 0 0 1em; }
 .btn-hero:hover::after { transform: translateX(4px); }
 .btn-glass {
   background: var(--glass-bg-strong); border-color: var(--glass-border);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 4px 16px rgba(60,70,120,.1);
 }
 .btn-ghost { background: transparent; border-color: var(--line); padding: .5rem .9rem; font-weight: 600; }
@@ -228,7 +228,7 @@ body:not(.sound-off) .ico-off { display: none; }
 }
 .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(34,197,94,.2); animation: pulse 1.8s infinite; }
 @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } }
-.lead { font-size: 1.15rem; color: var(--muted); max-width: 560px; }
+.lead { font-size: 1.15rem; color: var(--text); opacity: .85; font-weight: 500; max-width: 560px; }
 .hero-cta { display: flex; gap: .8rem; flex-wrap: wrap; margin: 1.6rem 0; }
 .hero-stats { list-style: none; padding: 0; margin: 0; display: flex; gap: 2rem; flex-wrap: wrap; }
 .hero-stats li { display: flex; flex-direction: column; }
@@ -321,7 +321,7 @@ body:not(.sound-off) .ico-off { display: none; }
 .demo-tabs::-webkit-scrollbar { display: none; }
 .tab { flex: 1; white-space: nowrap; padding: .7rem 1rem; border-radius: 999px; border: 0; background: transparent; font-weight: 700; color: var(--muted); transition: background .25s, color .25s; }
 .tab.active { color: #fff; background: var(--gradient); box-shadow: 0 6px 18px rgba(120,100,220,.3); }
-.demo-stage { padding: 1.5rem; min-height: 420px; }
+.demo-stage { padding: 1.5rem; min-height: 340px; }
 .demo-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
 .demo-title { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
 .demo-actions { display: flex; gap: .4rem; flex-wrap: wrap; }
@@ -473,6 +473,9 @@ textarea { resize: vertical; }
 .check input { margin-top: .25rem; accent-color: var(--g2); }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .form-status { min-height: 1.4em; font-weight: 600; margin: 0; }
+.form-fallback { display: flex; gap: .6rem; flex-wrap: wrap; }
+.form-fallback .btn { flex: 1; min-width: 190px; }
+.btn-wa { color: #fff; background: linear-gradient(135deg, #25d366, #128c7e); box-shadow: 0 8px 20px rgba(37,211,102,.35); }
 .form-status.ok { color: var(--ok); }
 .form-status.bad { color: var(--bad); }
 
@@ -520,7 +523,7 @@ textarea { resize: vertical; }
   .hero { grid-template-columns: 1fr; }
   .grid-3, .steps, .types-grid, .pricing { grid-template-columns: repeat(2, 1fr); }
   .contact { grid-template-columns: 1fr; gap: 2rem; }
-  .nav { display: none; position: absolute; top: calc(100% + .5rem); left: 0; right: 0; flex-direction: column; padding: .75rem; border-radius: var(--radius); background: var(--glass-bg-strong); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
+  .nav { display: none; position: absolute; top: calc(100% + .5rem); left: 0; right: 0; flex-direction: column; padding: .75rem; border-radius: var(--radius); background: var(--glass-bg-strong); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); }
   .nav.open { display: flex; }
   .burger { display: inline-flex; }
   .hide-mobile { display: none; }
@@ -725,3 +728,136 @@ h1 .grad-text::after {
   .reveal { opacity: 1; transform: none; }
   .hero-text > * { opacity: 1; transform: none; }
 }
+
+/* =========================================================
+   Секция «Примеры упражнений» — своя цветовая гамма
+   (зелёная–бирюзовая зона, отличная от остального сайта)
+   ========================================================= */
+#demos {
+  --g1: #059669;   /* изумрудный  */
+  --g2: #0d9488;   /* бирюзовый   */
+  --g3: #0891b2;   /* циан        */
+  --gradient: linear-gradient(90deg, var(--g1) 0%, var(--g2) 50%, var(--g3) 100%);
+  position: relative;
+  isolation: isolate;
+}
+/* =========================================================
+   Мобильная производительность: меньше анимаций,
+   стекло легче — чтобы не лагало на телефонах
+   ========================================================= */
+@media (max-width: 768px) {
+  /* фоновые пятна — статичные, меньше их, blur полегче */
+  .blob { animation: none; filter: blur(45px); opacity: .45; }
+  .blob-4, .blob-5 { display: none; }
+  /* выключаем бесконечные анимации (перерисовка каждый кадр) */
+  .grad-text, h1 .grad-text { animation: none; }
+  .progress i { animation: none; }
+  .btn-hero, .price.featured { animation: none; }
+  /* стекло ещё легче */
+  .glass { backdrop-filter: blur(10px) saturate(120%); -webkit-backdrop-filter: blur(10px) saturate(120%); }
+  .confetti { box-shadow: none; }
+}
+
+/* лёгкое цветное свечение за секцией */
+#demos::before {
+  content: ""; position: absolute; inset: -3rem; z-index: -1; border-radius: 48px; pointer-events: none;
+  background:
+    radial-gradient(55% 55% at 12% 18%, color-mix(in srgb, var(--g1) 11%, transparent), transparent 70%),
+    radial-gradient(55% 55% at 88% 82%, color-mix(in srgb, var(--g3) 11%, transparent), transparent 70%);
+}
+/* тени/подсветки, где цвет был захардкожен — переводим на палитру секции */
+#demos .tab.active { box-shadow: 0 6px 18px color-mix(in srgb, var(--g2) 40%, transparent); }
+#demos .letter-btn { box-shadow: 0 6px 16px color-mix(in srgb, var(--g2) 35%, transparent); }
+#demos .mem-front { box-shadow: 0 6px 16px color-mix(in srgb, var(--g2) 35%, transparent); }
+#demos .pair-item.sel { background: color-mix(in srgb, var(--g1) 14%, transparent); }
+#demos .sort-card.picked { box-shadow: 0 0 0 4px color-mix(in srgb, var(--g1) 24%, transparent); }
+#demos .bin.over { background: color-mix(in srgb, var(--g1) 10%, transparent); }
+#demos .speak-btn { color: var(--g2); }
+
+/* =========================================================
+   По отзывам: авторские блоки, отзывы, CTA в песочнице
+   ========================================================= */
+
+/* аватар (шапка, герой) */
+.ava {
+  position: relative; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+  display: grid; place-items: center; background: var(--gradient); color: #fff;
+  font-family: var(--font-display); font-weight: 800; border: 2px solid rgba(255,255,255,.85);
+  box-shadow: 0 4px 12px rgba(120,100,220,.3);
+}
+.ava b { font-size: 1.05rem; }
+.ava img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ava-lg { width: 48px; height: 48px; }
+.ava-lg b { font-size: 1.25rem; }
+.header-author { display: flex; align-items: center; gap: .55rem; }
+.header-author-name { font-weight: 700; font-size: .92rem; }
+
+/* авторская карточка в герое */
+.hero-author { display: flex; align-items: center; gap: .8rem; padding: .65rem .95rem; border-radius: 18px; margin-bottom: 1.4rem; }
+.hero-author-text b { display: block; font-size: .98rem; }
+.hero-author-text small { color: var(--muted); font-size: .82rem; line-height: 1.35; display: block; }
+.hero-text > :nth-child(6) { animation-delay: .75s; }
+
+/* CTA после песочницы */
+.demo-cta { margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1.1rem; flex-wrap: wrap; }
+.demo-cta b { font-family: var(--font-display); font-size: 1.15rem; letter-spacing: -.01em; }
+
+/* кто делает */
+.me { display: grid; grid-template-columns: minmax(260px, 380px) 1fr; gap: 2.5rem; padding: clamp(1.5rem, 4vw, 2.5rem); align-items: center; }
+.me-photo {
+  position: relative; aspect-ratio: 1 / 1.05; border-radius: var(--radius); overflow: hidden;
+  background: var(--gradient); display: grid; place-items: center;
+  box-shadow: 0 20px 50px rgba(80,70,200,.25);
+}
+.me-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.me-photo-fallback { font-family: var(--font-display); font-size: 4.5rem; font-weight: 800; color: rgba(255,255,255,.92); }
+.me-text h2 { margin-bottom: .6rem; }
+.me-facts { list-style: none; padding: 0; margin: 1.1rem 0 1.6rem; display: flex; flex-direction: column; gap: .55rem; font-weight: 600; }
+
+/* тарифы — для кого */
+.plan-for { color: var(--muted); font-size: .9rem; margin: -.55rem 0 1.1rem; }
+
+/* отзывы */
+.review { display: flex; flex-direction: column; gap: 1.1rem; }
+.review-text { font-size: 1.02rem; line-height: 1.5; margin: 0; }
+.review-author { display: flex; align-items: center; gap: .7rem; margin-top: auto; }
+.review-ava {
+  width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0;
+  background: var(--gradient); color: #fff; font-weight: 800; font-family: var(--font-display);
+}
+.review-who b { display: block; font-size: .95rem; }
+.review-who small { color: var(--muted); font-size: .82rem; }
+
+@media (max-width: 900px) {
+  .me { grid-template-columns: 1fr; text-align: center; }
+  .me-photo { max-width: 340px; margin: 0 auto; }
+  .me-facts { align-items: center; }
+}
+
+/* =========================================================
+   Под аудиторию 40+: гарантия совместимости, отзывы-переписки
+   ========================================================= */
+
+/* плашка-гарантия под статистикой героя */
+.hero-guarantee {
+  display: flex; align-items: flex-start; gap: .55rem; margin: 1.1rem 0 0;
+  font-size: .92rem; font-weight: 600; color: var(--text); opacity: .8; line-height: 1.45;
+}
+.hero-guarantee svg { flex-shrink: 0; margin-top: 2px; color: var(--ok); }
+.hero-text > :nth-child(7) { animation-delay: .9s; }
+
+/* отзывы — как скриншоты переписок */
+.review { gap: 1rem; }
+.chat { padding: 1.1rem 1rem .5rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--g2) 7%, var(--bg-soft)); }
+.chat-bubble {
+  max-width: 94%; background: var(--glass-bg-strong); border: 1px solid var(--line);
+  border-radius: 14px 14px 14px 4px; padding: .8rem .95rem .5rem;
+  box-shadow: 0 3px 10px rgba(60,70,120,.08);
+}
+.chat-bubble p { margin: 0 0 .4rem; font-size: .97rem; line-height: 1.45; }
+.chat-time {
+  display: flex; align-items: center; justify-content: flex-end; gap: .3rem;
+  font-size: .72rem; color: var(--muted);
+}
+.chat-time i { font-style: normal; color: #34b7f1; font-weight: 700; letter-spacing: -1.5px; }
+.review .review-author { margin-top: 0; }

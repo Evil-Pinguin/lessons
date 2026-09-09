@@ -7,7 +7,7 @@
    В браузер ключи не попадают.
    ========================================================= */
 
-const ALLOWED = ['name', 'email', 'age_group', 'exercise_type', 'plan', 'style', 'message', 'theme', 'page_url', 'user_agent'];
+const ALLOWED = ['name', 'contact', 'email', 'message', 'theme', 'page_url', 'user_agent'];
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -26,15 +26,16 @@ module.exports = async (req, res) => {
 
   // валидация
   const name = String(body.name || '').trim();
-  const email = String(body.email || '').trim();
+  const contact = String(body.contact || '').trim();
   const message = String(body.message || '').trim();
   if (name.length < 2 || name.length > 120) return res.status(400).json({ error: 'Укажите имя' });
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 200) return res.status(400).json({ error: 'Некорректный email' });
+  if (contact.length < 5 || contact.length > 200) return res.status(400).json({ error: 'Укажите телефон, Telegram или email' });
   if (message.length < 5 || message.length > 4000) return res.status(400).json({ error: 'Опишите задачу (от 5 до 4000 символов)' });
   if (body.website) return res.status(200).json({ ok: true }); // honeypot для ботов — молча игнорируем
 
   const row = {};
   ALLOWED.forEach(k => { if (body[k] != null) row[k] = String(body[k]).slice(0, 4000); });
+  row.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) ? contact : null;
   row.ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || null;
 
   try {

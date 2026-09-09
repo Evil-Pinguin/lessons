@@ -18,28 +18,6 @@
     $('#year').textContent = new Date().getFullYear();
     const form = $('#contactForm');
 
-    /* ---------- Звук ---------- */
-    $('#soundToggle').addEventListener('click', () => {
-      Sound.setEnabled(!Sound.isEnabled());
-      if (Sound.isEnabled()) Sound.play('correct');
-      toast(Sound.isEnabled() ? 'Звук включён' : 'Звук выключен');
-    });
-
-    /* ---------- Голосовая озвучка (включается кнопкой) ---------- */
-    const voiceBtn = $('#voiceBtn');
-    const syncVoice = () => {
-      voiceBtn.setAttribute('aria-pressed', Sound.isVoiceOn());
-      voiceBtn.classList.toggle('active', Sound.isVoiceOn());
-      $('.voice-label', voiceBtn).textContent = Sound.isVoiceOn() ? 'Голос вкл' : 'Голос выкл';
-    };
-    voiceBtn.addEventListener('click', () => {
-      Sound.setVoice(!Sound.isVoiceOn());
-      syncVoice();
-      if (Sound.isVoiceOn()) { Sound.speak('Озвучка включена.'); toast('Голос включён: кнопки «прослушать» и задания читаются вслух'); }
-      else toast('Голос выключен');
-    });
-    syncVoice();
-
     /* ---------- Мобильное меню ---------- */
     const nav = $('#nav');
     $('#burger').addEventListener('click', () => nav.classList.toggle('open'));
@@ -109,7 +87,7 @@
       modal.hidden = false; ta.focus();
     });
     $$('[data-close]', modal).forEach(b => b.addEventListener('click', () => (modal.hidden = true)));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { modal.hidden = true; $('#themePanel').hidden = true; } });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { modal.hidden = true; } });
     $('#editorSave').addEventListener('click', () => {
       const prev = Exercises.getData(current);
       const data = current.fromText(ta.value, prev);
@@ -119,27 +97,6 @@
     });
 
     run(Exercises.list[0]);
-
-    /* ---------- Своя идея → форма заявки ---------- */
-    $('#ideaForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const txt = $('#ideaText').value.trim();
-      if (!txt) return;
-      const typeSel = $('#fType'); typeSel.value = 'Своя идея';
-      const planSel = $('#fPlan'); planSel.value = 'Пока не знаю';
-      $('#fMsg').value = 'Моя идея упражнения:\n' + txt;
-      form.dispatchEvent(new Event('input'));
-      Sound.play('correct');
-      toast('Идея добавлена в заявку — осталось указать имя и почту');
-      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => $('#fName').focus({ preventScroll: true }), 700);
-    });
-
-    /* ---------- Тариф → форма ---------- */
-    $$('[data-plan]').forEach(a => a.addEventListener('click', () => {
-      const sel = $('#fPlan');
-      [...sel.options].forEach(o => { if (o.text.startsWith(a.dataset.plan)) sel.value = o.text; });
-    }));
 
     /* ---------- Форма → Supabase ---------- */
     const status = $('#formStatus'), submitBtn = $('#submitBtn');
@@ -156,33 +113,56 @@
       Object.entries(d).forEach(([k, v]) => { const f = form.elements[k]; if (f && f.type !== 'checkbox') f.value = v; });
     } catch {}
     form.addEventListener('input', () => {
-      const d = {}; ['name', 'email', 'age_group', 'exercise_type', 'plan', 'style', 'message'].forEach(k => (d[k] = form.elements[k].value));
+      const d = {}; ['name', 'contact', 'message'].forEach(k => (d[k] = form.elements[k].value));
       localStorage.setItem(DRAFT, JSON.stringify(d));
     });
+
+    /* ---------- Фолбэк: WhatsApp / почта — работает с телефона, без VPN ---------- */
+    const WA_NUMBER = '79681515691';
+    const fallbackRow = $('#formFallback');
+    const isTouch = matchMedia('(pointer: coarse)').matches;
+    const waUrl = p => 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(
+      `Заявка с сайта «Уроки+»\nИмя: ${p.name}\nСвязаться: ${p.contact}\n\n${p.message}`);
+    const mailUrl = p => 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Заявка с сайта «Уроки+»: ' + p.name) + '&body=' + encodeURIComponent(
+      `Имя: ${p.name}\nСвязаться: ${p.contact}\n\n${p.message}`);
+    function openFallback(p, err) {
+      fallbackRow.hidden = false;
+      $('#fbWa').href = waUrl(p);
+      $('#fbMail').href = mailUrl(p);
+      status.classList.remove('bad'); status.classList.add('ok');
+      status.textContent = err
+        ? (isTouch ? 'Не удалось отправить автоматически — открываю WhatsApp.' : 'Не удалось отправить автоматически — открываю почтовый клиент.')
+        : (isTouch ? 'Открываю WhatsApp — там просто нажмите «Отправить».' : 'Открываю почтовый клиент… Если не открылось — жмите кнопку ниже.');
+      location.href = isTouch ? waUrl(p) : mailUrl(p);
+    }
 
     form.addEventListener('submit', async e => {
       e.preventDefault();
       status.className = 'form-status'; status.textContent = '';
+      fallbackRow.hidden = true;
       let valid = true;
-      ['fName', 'fEmail', 'fMsg'].forEach(id => {
+      ['fName', 'fContact', 'fMsg'].forEach(id => {
         const f = $('#' + id); const ok = f.checkValidity() && f.value.trim();
         f.classList.toggle('invalid', !ok); if (!ok) valid = false;
       });
       if (!$('#fAgree').checked) valid = false;
       if (!valid) { Sound.play('wrong'); status.textContent = 'Пожалуйста, заполните обязательные поля и поставьте галочку.'; status.classList.add('bad'); return; }
 
+      const contact = form.contact.value.trim();
       const payload = {
-        name: form.name.value.trim(), email: form.email.value.trim(), age_group: form.age_group.value,
-        exercise_type: form.exercise_type.value, plan: form.plan.value, style: form.style.value,
-        message: form.message.value.trim(), theme: document.documentElement.getAttribute('data-theme'),
+        name: form.name.value.trim(),
+        contact,
+        email: /^\S+@\S+\.\S+$/.test(contact) ? contact : '',
+        message: form.message.value.trim(),
+        theme: document.documentElement.getAttribute('data-theme'),
         page_url: location.href, user_agent: navigator.userAgent,
       };
 
       submitBtn.disabled = true; submitBtn.textContent = 'Отправляю…';
       const done = () => {
         Sound.play('fanfare');
-        status.textContent = 'Заявка отправлена! Отвечу на вашу почту в течение дня.'; status.classList.add('ok');
-        form.reset(); localStorage.removeItem(DRAFT);
+        status.textContent = 'Заявка отправлена! Напишу вам в течение дня.'; status.classList.add('ok');
+        form.reset(); localStorage.removeItem(DRAFT); fallbackRow.hidden = true;
       };
       try {
         // 1) Серверная функция Vercel (/api/submit) — ключи не попадают в браузер
@@ -206,16 +186,12 @@
           done(); return;
         }
 
-        // 3) Ничего не настроено — письмо
-        const subject = encodeURIComponent(`Заявка на упражнение: ${payload.exercise_type} (${payload.plan})`);
-        const body = encodeURIComponent(
-          `Имя: ${payload.name}\nEmail: ${payload.email}\nВозраст: ${payload.age_group}\nТип: ${payload.exercise_type}\nТариф: ${payload.plan}\nОформление: ${payload.style}\n\n${payload.message}`);
-        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+        // 3) API и Supabase недоступны — WhatsApp (с любого телефона, без VPN) или почта
         Sound.play('correct');
-        status.textContent = 'Открываю почтовый клиент… Если письмо не открылось — напишите на ' + CONTACT_EMAIL; status.classList.add('ok');
+        openFallback(payload);
       } catch (err) {
         console.error(err); Sound.play('wrong');
-        status.textContent = (err && err.message && /[а-яА-Я]/.test(err.message) ? err.message + '. ' : 'Не удалось отправить. ') + 'Напишите, пожалуйста, на ' + CONTACT_EMAIL; status.classList.add('bad');
+        openFallback(payload, err);
       } finally {
         submitBtn.disabled = false; submitBtn.textContent = 'Отправить заявку';
       }

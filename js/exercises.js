@@ -43,7 +43,8 @@
   }
   function confetti() {
     const colors = ['#4285f4', '#9b72cb', '#d96570', '#22c55e', '#f59e0b', '#06b6d4'];
-    for (let i = 0; i < 70; i++) {
+    const n = matchMedia('(max-width: 768px)').matches ? 28 : 70; // на телефонах меньше
+    for (let i = 0; i < n; i++) {
       const c = el('span', 'confetti');
       c.style.left = Math.random() * 100 + 'vw';
       c.style.background = colors[i % colors.length];
