@@ -179,25 +179,43 @@
       };
 
       submitBtn.disabled = true; submitBtn.textContent = 'Отправляю…';
+      const done = () => {
+        Sound.play('fanfare');
+        status.textContent = 'Заявка отправлена! Отвечу на вашу почту в течение дня.'; status.classList.add('ok');
+        form.reset(); localStorage.removeItem(DRAFT);
+      };
       try {
+        // 1) Серверная функция Vercel (/api/submit) — ключи не попадают в браузер
+        let sent = false;
+        if (cfg.useApi !== false) {
+          try {
+            const r = await fetch(cfg.apiUrl || '/api/submit', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...payload, website: form.website ? form.website.value : '' }),
+            });
+            if (r.ok) sent = true;
+            else if (r.status !== 404 && r.status !== 405) { const j = await r.json().catch(() => ({})); throw new Error(j.error || 'API error'); }
+          } catch (e) { if (!(e instanceof TypeError)) throw e; /* TypeError = сети/нет API (локально) — идём дальше */ }
+        }
+        if (sent) { done(); return; }
+
+        // 2) Прямая запись в Supabase публичным anon-ключом (RLS: только insert)
         if (supa) {
           const { error } = await supa.from(cfg.table || 'requests').insert(payload);
           if (error) throw error;
-          Sound.play('fanfare');
-          status.textContent = 'Заявка отправлена! Отвечу на вашу почту в течение дня.'; status.classList.add('ok');
-          form.reset(); localStorage.removeItem(DRAFT);
-        } else {
-          // Supabase не настроен — запасной вариант: письмо
-          const subject = encodeURIComponent(`Заявка на упражнение: ${payload.exercise_type} (${payload.plan})`);
-          const body = encodeURIComponent(
-            `Имя: ${payload.name}\nEmail: ${payload.email}\nВозраст: ${payload.age_group}\nТип: ${payload.exercise_type}\nТариф: ${payload.plan}\nОформление: ${payload.style}\n\n${payload.message}`);
-          window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-          Sound.play('correct');
-          status.textContent = 'Открываю почтовый клиент… Если письмо не открылось — напишите на ' + CONTACT_EMAIL; status.classList.add('ok');
+          done(); return;
         }
+
+        // 3) Ничего не настроено — письмо
+        const subject = encodeURIComponent(`Заявка на упражнение: ${payload.exercise_type} (${payload.plan})`);
+        const body = encodeURIComponent(
+          `Имя: ${payload.name}\nEmail: ${payload.email}\nВозраст: ${payload.age_group}\nТип: ${payload.exercise_type}\nТариф: ${payload.plan}\nОформление: ${payload.style}\n\n${payload.message}`);
+        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+        Sound.play('correct');
+        status.textContent = 'Открываю почтовый клиент… Если письмо не открылось — напишите на ' + CONTACT_EMAIL; status.classList.add('ok');
       } catch (err) {
         console.error(err); Sound.play('wrong');
-        status.textContent = 'Не удалось отправить. Напишите, пожалуйста, на ' + CONTACT_EMAIL; status.classList.add('bad');
+        status.textContent = (err && err.message && /[а-яА-Я]/.test(err.message) ? err.message + '. ' : 'Не удалось отправить. ') + 'Напишите, пожалуйста, на ' + CONTACT_EMAIL; status.classList.add('bad');
       } finally {
         submitBtn.disabled = false; submitBtn.textContent = 'Отправить заявку';
       }

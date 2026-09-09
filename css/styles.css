@@ -471,6 +471,7 @@ body:not(.sound-off) .ico-off { display: none; }
 textarea { resize: vertical; }
 .check { display: flex; align-items: flex-start; gap: .5rem; font-size: .88rem; color: var(--muted); }
 .check input { margin-top: .25rem; accent-color: var(--g2); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .form-status { min-height: 1.4em; font-weight: 600; margin: 0; }
 .form-status.ok { color: var(--ok); }
 .form-status.bad { color: var(--bad); }

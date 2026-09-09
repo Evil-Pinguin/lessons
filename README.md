@@ -19,7 +19,11 @@
 python3 -m http.server 8080
 ```
 
-## Подключение Supabase
+## Публикация и Supabase
+
+Подробная инструкция: **[DEPLOY.md](DEPLOY.md)** — Vercel, переменные окружения, SQL для базы.
+
+## Подключение Supabase без Vercel (GitHub Pages и т. п.)
 
 1. Создайте проект на [supabase.com](https://supabase.com).
 2. В **SQL Editor** выполните `supabase/schema.sql` (таблица `requests` + RLS: анонимные могут только добавлять).
