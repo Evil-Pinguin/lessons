@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=1788928859" />
+  <link rel="stylesheet" href="css/styles.css?v=1788929978" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%234285f4'/><stop offset='.5' stop-color='%239b72cb'/><stop offset='1' stop-color='%23d96570'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='url(%23g)'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>У</text></svg>" />
 </head>
 <body>
@@ -20,6 +20,8 @@
     <span class="blob blob-4"></span>
     <span class="blob blob-5"></span>
   </div>
+
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
   <!-- ===== Шапка ===== -->
   <header class="site-header glass">
@@ -46,6 +48,7 @@
       <button class="icon-btn" id="themeBtn" title="Оформление" aria-label="Выбрать оформление" aria-haspopup="dialog">
         <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.04 10 9c0 3.31-2.69 6-6 6h-1.77c-.28 0-.5.22-.5.5 0 .12.05.23.13.33.41.47.64 1.06.64 1.67A2.5 2.5 0 0 1 12 22zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5a.54.54 0 0 0-.14-.35c-.41-.46-.63-1.05-.63-1.65a2.5 2.5 0 0 1 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7z"/><circle cx="6.5" cy="11.5" r="1.5" fill="currentColor"/><circle cx="9.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="14.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="17.5" cy="11.5" r="1.5" fill="currentColor"/></svg>
       </button>
+      <a href="tel:+79681515691" class="header-phone hide-mobile">8 968 151-56-91</a>
       <a href="#contact" class="btn btn-primary btn-sm hide-mobile">Заказать</a>
       <button class="icon-btn burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
     </div>
@@ -67,12 +70,19 @@
           <a href="#demos" class="btn btn-glass">Попробовать примеры</a>
         </div>
         <ul class="hero-stats">
-          <li><b>от 500 ₽</b><span>за упражнение</span></li>
+          <li><b>от <span class="count" data-to="500">0</span> ₽</b><span>за упражнение</span></li>
           <li><b>2–3 дня</b><span>срок выполнения</span></li>
-          <li><b>7+</b><span>форматов заданий</span></li>
+          <li><b><span class="count" data-to="9">0</span>+</b><span>форматов заданий</span></li>
         </ul>
       </div>
-      <div class="hero-card glass" id="heroDemo">
+      <div class="hero-visual">
+        <span class="float-shape fs-1" aria-hidden="true"></span>
+        <span class="float-shape fs-2" aria-hidden="true"></span>
+        <span class="float-shape fs-3" aria-hidden="true"></span>
+        <img src="img/ui/star.png" alt="" class="float-img fi-1" aria-hidden="true" />
+        <img src="img/ui/puzzle.png" alt="" class="float-img fi-2" aria-hidden="true" />
+        <img src="img/ui/bulb.png" alt="" class="float-img fi-3" aria-hidden="true" />
+      <div class="hero-card glass tilt" id="heroDemo">
         <div class="hero-card-head">
           <span class="badge">Мини-демо · нажимайте!</span>
           <span class="score" id="heroScore">0 / 4</span>
@@ -81,42 +91,43 @@
         <div class="hero-grid" id="heroGrid"></div>
         <p class="hero-card-hint">Каждое нажатие — со звуком. Так это работает у детей.</p>
       </div>
+      </div>
     </section>
 
     <!-- ===== Что я делаю ===== -->
     <section id="about" class="container section">
-      <div class="section-head">
+      <div class="section-head reveal">
         <span class="eyebrow">Что вы получаете</span>
         <h2>Задача понятна с первого экрана</h2>
         <p>Каждое упражнение — это <b>текст задания</b>, <b>что именно нужно сделать</b> и удобная интерактивная механика, понятная ребёнку без объяснений.</p>
       </div>
       <div class="grid-3">
-        <article class="card glass">
+        <article class="card glass reveal">
           <div class="card-ico g1"><img src="img/ui/notebook.png" alt="" class="" loading="lazy" /></div>
           <h3>Чёткая формулировка</h3>
           <p>Текст задачи крупно и просто: «Собери слово», «Найди пару», «Распредели по группам». Ребёнок понимает, что делать, с первой секунды.</p>
         </article>
-        <article class="card glass">
+        <article class="card glass reveal">
           <div class="card-ico g2"><img src="img/ui/speaker.png" alt="" class="" loading="lazy" /></div>
           <h3>Звук и отклик</h3>
           <p>Приятные сигналы за правильный ответ, мягкая подсказка при ошибке и фанфары в конце. Можно озвучить задание голосом.</p>
         </article>
-        <article class="card glass">
+        <article class="card glass reveal">
           <div class="card-ico g3"><img src="img/ui/palette.png" alt="" class="" loading="lazy" /></div>
           <h3>Ваш стиль</h3>
           <p>Светлая, тёмная или красочная тема — или ваш собственный вариант в цветах школы, группы или праздника.</p>
         </article>
-        <article class="card glass">
+        <article class="card glass reveal">
           <div class="card-ico g4"><img src="img/ui/save.png" alt="" class="" loading="lazy" /></div>
           <h3>Редактируется</h3>
           <p>Вопросы и варианты можно менять самостоятельно — изменения сохраняются локально в браузере. Не нужен программист.</p>
         </article>
-        <article class="card glass">
+        <article class="card glass reveal">
           <div class="card-ico g5"><img src="img/ui/laptop.png" alt="" class="" loading="lazy" /></div>
           <h3>Работает везде</h3>
           <p>Интерактивная доска, проектор, ноутбук, планшет, телефон. Не требует установки — открывается по ссылке.</p>
         </article>
-        <article class="card glass">
+        <article class="card glass reveal">
           <div class="card-ico g6"><img src="img/ui/bolt.png" alt="" class="" loading="lazy" /></div>
           <h3>Быстро</h3>
           <p>Срок — 2–3 дня. Пришлите тему, возраст детей и материал (слова, картинки, вопросы) — остальное сделаю я.</p>
@@ -126,20 +137,20 @@
 
     <!-- ===== Как это работает ===== -->
     <section class="container section">
-      <div class="section-head">
+      <div class="section-head reveal">
         <span class="eyebrow">Как заказать</span>
         <h2>Три простых шага</h2>
       </div>
       <ol class="steps">
-        <li class="glass"><span class="step-num">1</span><h3>Опишите задачу</h3><p>Предмет, возраст, тема, тип упражнения. Можно приложить материал: список слов, вопросы, картинки.</p></li>
-        <li class="glass"><span class="step-num">2</span><h3>Согласуем стиль и цену</h3><p>Выберем оформление и звук. Цена зависит от сложности — от 500 ₽. Отвечаю в тот же день.</p></li>
-        <li class="glass"><span class="step-num">3</span><h3>Получите готовое упражнение</h3><p>Через 2–3 дня — ссылка или файл, который открывается в любом браузере. Правки по мелочам — бесплатно.</p></li>
+        <li class="glass reveal"><span class="step-num">1</span><h3>Опишите задачу</h3><p>Предмет, возраст, тема, тип упражнения. Можно приложить материал: список слов, вопросы, картинки.</p></li>
+        <li class="glass reveal"><span class="step-num">2</span><h3>Согласуем стиль и цену</h3><p>Выберем оформление и звук. Цена зависит от сложности — от 500 ₽. Отвечаю в тот же день.</p></li>
+        <li class="glass reveal"><span class="step-num">3</span><h3>Получите готовое упражнение</h3><p>Через 2–3 дня — ссылка или файл, который открывается в любом браузере. Правки по мелочам — бесплатно.</p></li>
       </ol>
     </section>
 
     <!-- ===== Демо-упражнения ===== -->
     <section id="demos" class="container section">
-      <div class="section-head">
+      <div class="section-head reveal">
         <span class="eyebrow">Попробуйте сами</span>
         <h2>Примеры упражнений</h2>
         <p>Это живые демо. Нажмите <b>«Редактировать»</b>, чтобы поменять вопросы и слова под себя — изменения сохранятся в вашем браузере.</p>
@@ -154,7 +165,7 @@
         <button class="tab" data-tab="memory" role="tab"><img src="img/ui/cards.png" alt="" class="" loading="lazy" />Мемори</button>
       </div>
 
-      <div class="demo-stage glass" id="demoStage">
+      <div class="demo-stage glass reveal" id="demoStage">
         <div class="demo-toolbar">
           <div class="demo-title" id="demoTitle"></div>
           <div class="demo-actions">
@@ -172,24 +183,24 @@
 
     <!-- ===== Виды упражнений ===== -->
     <section id="types" class="container section">
-      <div class="section-head">
+      <div class="section-head reveal">
         <span class="eyebrow">Форматы</span>
         <h2>Какие упражнения я делаю</h2>
         <p>Для дошкольников — крупные картинки, минимум текста, озвучка. Для школьников — тексты, формулы, таблицы, таймер и подсчёт баллов.</p>
       </div>
       <div class="types-grid">
-        <div class="type glass"><span><img src="img/ui/brain.png" alt="" class="" loading="lazy" /></span><b>Викторина</b><small>Вопрос — 2–4 варианта ответа, с картинками или без</small><i>от 500 ₽</i></div>
-        <div class="type glass"><span><img src="img/ui/link.png" alt="" class="" loading="lazy" /></span><b>Найди пару</b><small>Слово — картинка, термин — определение, число — пример</small><i>от 500 ₽</i></div>
-        <div class="type glass"><span><img src="img/ui/abc.png" alt="" class="" loading="lazy" /></span><b>Собери слово / предложение</b><small>Буквы или слова в правильном порядке</small><i>от 600 ₽</i></div>
-        <div class="type glass"><span><img src="img/ui/folder.png" alt="" class="" loading="lazy" /></span><b>Распредели по группам</b><small>Перетаскивание карточек в корзины</small><i>от 700 ₽</i></div>
-        <div class="type glass"><span><img src="img/ui/check.png" alt="" class="" loading="lazy" /></span><b>Верно / неверно</b><small>Быстрые утверждения на закрепление</small><i>от 500 ₽</i></div>
-        <div class="type glass"><span><img src="img/ui/cards.png" alt="" class="" loading="lazy" /></span><b>Мемори</b><small>Найди одинаковые карточки — память и внимание</small><i>от 600 ₽</i></div>
-        <div class="type glass"><span><img src="img/ui/pencil.png" alt="" class="" loading="lazy" /></span><b>Вставь пропущенное</b><small>Пропуски в тексте, буквы в словах</small><i>от 700 ₽</i></div>
-        <div class="type glass"><span><img src="img/ui/puzzle.png" alt="" class="" loading="lazy" /></span><b>Кроссворд / пазл</b><small>Собери картинку или разгадай слова</small><i>от 900 ₽</i></div>
-        <div class="type glass"><span><img src="img/ui/map.png" alt="" class="" loading="lazy" /></span><b>Квест / карта / лента времени</b><small>Путешествие по станциям, интерактивная карта, хронология</small><i>от 1 200 ₽</i></div>
+        <div class="type glass reveal"><span><img src="img/ui/brain.png" alt="" class="" loading="lazy" /></span><b>Викторина</b><small>Вопрос — 2–4 варианта ответа, с картинками или без</small><i>от 500 ₽</i></div>
+        <div class="type glass reveal"><span><img src="img/ui/link.png" alt="" class="" loading="lazy" /></span><b>Найди пару</b><small>Слово — картинка, термин — определение, число — пример</small><i>от 500 ₽</i></div>
+        <div class="type glass reveal"><span><img src="img/ui/abc.png" alt="" class="" loading="lazy" /></span><b>Собери слово / предложение</b><small>Буквы или слова в правильном порядке</small><i>от 600 ₽</i></div>
+        <div class="type glass reveal"><span><img src="img/ui/folder.png" alt="" class="" loading="lazy" /></span><b>Распредели по группам</b><small>Перетаскивание карточек в корзины</small><i>от 700 ₽</i></div>
+        <div class="type glass reveal"><span><img src="img/ui/check.png" alt="" class="" loading="lazy" /></span><b>Верно / неверно</b><small>Быстрые утверждения на закрепление</small><i>от 500 ₽</i></div>
+        <div class="type glass reveal"><span><img src="img/ui/cards.png" alt="" class="" loading="lazy" /></span><b>Мемори</b><small>Найди одинаковые карточки — память и внимание</small><i>от 600 ₽</i></div>
+        <div class="type glass reveal"><span><img src="img/ui/pencil.png" alt="" class="" loading="lazy" /></span><b>Вставь пропущенное</b><small>Пропуски в тексте, буквы в словах</small><i>от 700 ₽</i></div>
+        <div class="type glass reveal"><span><img src="img/ui/puzzle.png" alt="" class="" loading="lazy" /></span><b>Кроссворд / пазл</b><small>Собери картинку или разгадай слова</small><i>от 900 ₽</i></div>
+        <div class="type glass reveal"><span><img src="img/ui/map.png" alt="" class="" loading="lazy" /></span><b>Квест / карта / лента времени</b><small>Путешествие по станциям, интерактивная карта, хронология</small><i>от 1 200 ₽</i></div>
       </div>
 
-      <div class="idea glass" id="idea">
+      <div class="idea glass reveal" id="idea">
         <div class="idea-ico"><img src="img/ui/bulb.png" alt="" class="" loading="lazy" /></div>
         <div class="idea-text">
           <h3>Есть своя идея?</h3>
@@ -204,13 +215,13 @@
 
     <!-- ===== Цены ===== -->
     <section id="pricing" class="container section">
-      <div class="section-head">
+      <div class="section-head reveal">
         <span class="eyebrow">Стоимость</span>
         <h2>Цена зависит от сложности</h2>
         <p>Срок для любого тарифа — <b>2–3 дня</b>. Если нужно быстрее — напишите, обсудим.</p>
       </div>
       <div class="pricing">
-        <article class="price glass">
+        <article class="price glass reveal">
           <h3>Простое</h3>
           <div class="price-val">от 500 ₽</div>
           <ul>
@@ -221,7 +232,7 @@
           </ul>
           <a href="#contact" class="btn btn-glass" data-plan="Простое">Выбрать</a>
         </article>
-        <article class="price glass featured">
+        <article class="price glass featured reveal">
           <span class="badge-top">Популярно</span>
           <h3>Стандарт</h3>
           <div class="price-val">от 900 ₽</div>
@@ -234,7 +245,7 @@
           </ul>
           <a href="#contact" class="btn btn-primary" data-plan="Стандарт">Выбрать</a>
         </article>
-        <article class="price glass">
+        <article class="price glass reveal">
           <h3>Комплекс</h3>
           <div class="price-val">от 2 000 ₽</div>
           <ul>
@@ -251,7 +262,7 @@
 
     <!-- ===== Контакты / форма ===== -->
     <section id="contact" class="container section">
-      <div class="contact glass">
+      <div class="contact glass reveal">
         <div class="contact-info">
           <span class="eyebrow">Связаться</span>
           <h2>Анжелина <span class="grad-text">Михайловна</span></h2>
@@ -260,6 +271,18 @@
             <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
             zloipingvin2000@gmail.com
           </a>
+          <a class="mail-link phone-link" href="tel:+79681515691">
+            <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
+            8 968 151-56-91
+          </a>
+          <div class="messengers">
+            <a href="https://wa.me/79681515691" target="_blank" rel="noopener" class="msg-btn wa" title="WhatsApp">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.6-.91-2.2-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.12-.27-.2-.57-.35M12.05 21.8h-.01a9.85 9.85 0 0 1-5.02-1.38l-.36-.21-3.73.98 1-3.64-.24-.37a9.83 9.83 0 0 1-1.5-5.24c0-5.44 4.42-9.86 9.87-9.86 2.63 0 5.11 1.03 6.97 2.89a9.8 9.8 0 0 1 2.88 6.98c0 5.44-4.43 9.86-9.86 9.86m8.4-18.26A11.8 11.8 0 0 0 12.04 0C5.5 0 .16 5.34.16 11.9c0 2.1.55 4.15 1.59 5.95L0 24l6.3-1.65a11.9 11.9 0 0 0 5.74 1.46h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.18-1.24-6.17-3.49-8.42"/></svg>WhatsApp
+            </a>
+            <a href="https://t.me/+79681515691" target="_blank" rel="noopener" class="msg-btn tg" title="Telegram">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M9.04 15.47 8.66 20.8c.54 0 .78-.23 1.06-.51l2.55-2.44 5.28 3.87c.97.53 1.65.25 1.91-.9l3.46-16.2c.31-1.42-.51-1.98-1.45-1.63L1.14 10.8c-1.39.54-1.37 1.31-.24 1.66l5.2 1.62L18.17 6.5c.57-.37 1.09-.17.66.2"/></svg>Telegram
+            </a>
+          </div>
           <ul class="contact-facts">
             <li><i class="fact-dot"></i>Срок: 2–3 дня</li>
             <li><i class="fact-dot"></i>От 500 ₽</li>
@@ -335,7 +358,7 @@
 
   <footer class="site-footer container">
     <div>© <span id="year"></span> Анжелина Михайловна · Интерактивные упражнения для уроков</div>
-    <div><a href="mailto:zloipingvin2000@gmail.com">zloipingvin2000@gmail.com</a></div>
+    <div class="footer-links"><a href="tel:+79681515691">8 968 151-56-91</a><a href="mailto:zloipingvin2000@gmail.com">zloipingvin2000@gmail.com</a></div>
   </footer>
 
   <!-- ===== Панель темы ===== -->
@@ -380,10 +403,11 @@
   <div class="toast glass" id="toast" hidden></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-config.js?v=1788928859"></script>
-  <script src="js/audio.js?v=1788928859"></script>
-  <script src="js/theme.js?v=1788928859"></script>
-  <script src="js/exercises.js?v=1788928859"></script>
-  <script src="js/app.js?v=1788928859"></script>
+  <script src="js/supabase-config.js?v=1788929978"></script>
+  <script src="js/audio.js?v=1788929978"></script>
+  <script src="js/theme.js?v=1788929978"></script>
+  <script src="js/exercises.js?v=1788929978"></script>
+  <script src="js/app.js?v=1788929978"></script>
+  <script src="js/effects.js?v=1788929978"></script>
 </body>
 </html>
