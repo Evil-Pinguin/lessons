@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Интерактивные упражнения для уроков — Анжелина Михайловна</title>
+  <meta name="description" content="Создание интерактивных упражнений для дошкольников и школьников: викторины, «найди пару», сортировка, конструктор слов и другие ИКТ-средства. Срок 2–3 дня, цена от 500 ₽." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%234285f4'/><stop offset='.5' stop-color='%239b72cb'/><stop offset='1' stop-color='%23d96570'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='url(%23g)'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>У</text></svg>" />
+</head>
+<body>
+  <!-- Фоновые градиентные пятна -->
+  <div class="bg-blobs" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <!-- ===== Шапка ===== -->
+  <header class="site-header glass">
+    <a href="#top" class="logo">
+      <span class="logo-mark">У</span>
+      <span class="logo-text">Уроки<span class="grad-text">+</span></span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#about">Что я делаю</a>
+      <a href="#demos">Примеры</a>
+      <a href="#types">Виды упражнений</a>
+      <a href="#pricing">Цены</a>
+      <a href="#contact">Связаться</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="soundToggle" title="Звук вкл/выкл" aria-label="Переключить звук">
+        <svg class="ico-on" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        <svg class="ico-off" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M16.5 12A4.5 4.5 0 0 0 14 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.8 8.8 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
+      </button>
+      <button class="icon-btn" id="themeBtn" title="Оформление" aria-label="Выбрать оформление" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.04 10 9c0 3.31-2.69 6-6 6h-1.77c-.28 0-.5.22-.5.5 0 .12.05.23.13.33.41.47.64 1.06.64 1.67A2.5 2.5 0 0 1 12 22zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5a.54.54 0 0 0-.14-.35c-.41-.46-.63-1.05-.63-1.65a2.5 2.5 0 0 1 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7z"/><circle cx="6.5" cy="11.5" r="1.5" fill="currentColor"/><circle cx="9.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="14.5" cy="7.5" r="1.5" fill="currentColor"/><circle cx="17.5" cy="11.5" r="1.5" fill="currentColor"/></svg>
+      </button>
+      <a href="#contact" class="btn btn-primary btn-sm hide-mobile">Заказать</a>
+      <button class="icon-btn burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ===== Герой ===== -->
+    <section class="hero container">
+      <div class="hero-text">
+        <div class="chip glass"><span class="dot"></span> Принимаю заказы · срок 2–3 дня</div>
+        <h1>Интерактивные <span class="grad-text">упражнения</span> для ваших уроков</h1>
+        <p class="lead">
+          Создаю яркие ИКТ-задания для дошкольников и школьников: викторины, «найди пару»,
+          сортировку, конструктор слов — как в LearningApps, только под вашу тему и вашу программу.
+          Со звуком, анимацией и в вашем стиле.
+        </p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-primary">Заказать упражнение</a>
+          <a href="#demos" class="btn btn-glass">Попробовать примеры</a>
+        </div>
+        <ul class="hero-stats">
+          <li><b>от 500 ₽</b><span>за упражнение</span></li>
+          <li><b>2–3 дня</b><span>срок выполнения</span></li>
+          <li><b>7+</b><span>форматов заданий</span></li>
+        </ul>
+      </div>
+      <div class="hero-card glass" id="heroDemo">
+        <div class="hero-card-head">
+          <span class="badge">Мини-демо · нажимайте!</span>
+          <span class="score" id="heroScore">0 / 4</span>
+        </div>
+        <p class="hero-card-q">Найди все <b>фрукты</b> 🍎</p>
+        <div class="hero-grid" id="heroGrid"></div>
+        <p class="hero-card-hint">Каждое нажатие — со звуком. Так это работает у детей.</p>
+      </div>
+    </section>
+
+    <!-- ===== Что я делаю ===== -->
+    <section id="about" class="container section">
+      <div class="section-head">
+        <span class="eyebrow">Что вы получаете</span>
+        <h2>Задача понятна с первого экрана</h2>
+        <p>Каждое упражнение — это <b>текст задания</b>, <b>что именно нужно сделать</b> и удобная интерактивная механика, понятная ребёнку без объяснений.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card glass">
+          <div class="card-ico g1">📝</div>
+          <h3>Чёткая формулировка</h3>
+          <p>Текст задачи крупно и просто: «Собери слово», «Найди пару», «Распредели по группам». Ребёнок понимает, что делать, с первой секунды.</p>
+        </article>
+        <article class="card glass">
+          <div class="card-ico g2">🔊</div>
+          <h3>Звук и отклик</h3>
+          <p>Приятные сигналы за правильный ответ, мягкая подсказка при ошибке и фанфары в конце. Можно озвучить задание голосом.</p>
+        </article>
+        <article class="card glass">
+          <div class="card-ico g3">🎨</div>
+          <h3>Ваш стиль</h3>
+          <p>Светлая, тёмная или красочная тема — или ваш собственный вариант в цветах школы, группы или праздника.</p>
+        </article>
+        <article class="card glass">
+          <div class="card-ico g4">💾</div>
+          <h3>Редактируется</h3>
+          <p>Вопросы и варианты можно менять самостоятельно — изменения сохраняются локально в браузере. Не нужен программист.</p>
+        </article>
+        <article class="card glass">
+          <div class="card-ico g5">💻</div>
+          <h3>Работает везде</h3>
+          <p>Интерактивная доска, проектор, ноутбук, планшет, телефон. Не требует установки — открывается по ссылке.</p>
+        </article>
+        <article class="card glass">
+          <div class="card-ico g6">⚡</div>
+          <h3>Быстро</h3>
+          <p>Срок — 2–3 дня. Пришлите тему, возраст детей и материал (слова, картинки, вопросы) — остальное сделаю я.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Как это работает ===== -->
+    <section class="container section">
+      <div class="section-head">
+        <span class="eyebrow">Как заказать</span>
+        <h2>Три простых шага</h2>
+      </div>
+      <ol class="steps">
+        <li class="glass"><span class="step-num">1</span><h3>Опишите задачу</h3><p>Предмет, возраст, тема, тип упражнения. Можно приложить материал: список слов, вопросы, картинки.</p></li>
+        <li class="glass"><span class="step-num">2</span><h3>Согласуем стиль и цену</h3><p>Выберем оформление и звук. Цена зависит от сложности — от 500 ₽. Отвечаю в тот же день.</p></li>
+        <li class="glass"><span class="step-num">3</span><h3>Получите готовое упражнение</h3><p>Через 2–3 дня — ссылка или файл, который открывается в любом браузере. Правки по мелочам — бесплатно.</p></li>
+      </ol>
+    </section>
+
+    <!-- ===== Демо-упражнения ===== -->
+    <section id="demos" class="container section">
+      <div class="section-head">
+        <span class="eyebrow">Попробуйте сами</span>
+        <h2>Примеры упражнений</h2>
+        <p>Это живые демо. Нажмите <b>«Редактировать»</b>, чтобы поменять вопросы и слова под себя — изменения сохранятся в вашем браузере.</p>
+      </div>
+
+      <div class="demo-tabs glass" role="tablist">
+        <button class="tab active" data-tab="quiz" role="tab">🧠 Викторина</button>
+        <button class="tab" data-tab="pairs" role="tab">🔗 Найди пару</button>
+        <button class="tab" data-tab="word" role="tab">🔤 Собери слово</button>
+        <button class="tab" data-tab="sort" role="tab">🗂️ Распредели</button>
+        <button class="tab" data-tab="truefalse" role="tab">✅ Верно / неверно</button>
+        <button class="tab" data-tab="memory" role="tab">🃏 Мемори</button>
+      </div>
+
+      <div class="demo-stage glass" id="demoStage">
+        <div class="demo-toolbar">
+          <div class="demo-title" id="demoTitle"></div>
+          <div class="demo-actions">
+            <button class="btn btn-ghost btn-sm" id="demoSpeak" title="Озвучить задание">🔈 Озвучить</button>
+            <button class="btn btn-ghost btn-sm" id="demoEdit">✏️ Редактировать</button>
+            <button class="btn btn-ghost btn-sm" id="demoReset" title="Вернуть исходный вариант">↺ Сбросить</button>
+            <button class="btn btn-ghost btn-sm" id="demoRestart">▶ Заново</button>
+          </div>
+        </div>
+        <div class="demo-task" id="demoTask"></div>
+        <div class="demo-body" id="demoBody"></div>
+        <div class="demo-result" id="demoResult" hidden></div>
+      </div>
+    </section>
+
+    <!-- ===== Виды упражнений ===== -->
+    <section id="types" class="container section">
+      <div class="section-head">
+        <span class="eyebrow">Форматы</span>
+        <h2>Какие упражнения я делаю</h2>
+        <p>Для дошкольников — крупные картинки, минимум текста, озвучка. Для школьников — тексты, формулы, таблицы, таймер и подсчёт баллов.</p>
+      </div>
+      <div class="types-grid">
+        <div class="type glass"><span>🧠</span><b>Викторина</b><small>Вопрос — 2–4 варианта ответа, с картинками или без</small><i>от 500 ₽</i></div>
+        <div class="type glass"><span>🔗</span><b>Найди пару</b><small>Слово — картинка, термин — определение, число — пример</small><i>от 500 ₽</i></div>
+        <div class="type glass"><span>🔤</span><b>Собери слово / предложение</b><small>Буквы или слова в правильном порядке</small><i>от 600 ₽</i></div>
+        <div class="type glass"><span>🗂️</span><b>Распредели по группам</b><small>Перетаскивание карточек в корзины</small><i>от 700 ₽</i></div>
+        <div class="type glass"><span>✅</span><b>Верно / неверно</b><small>Быстрые утверждения на закрепление</small><i>от 500 ₽</i></div>
+        <div class="type glass"><span>🃏</span><b>Мемори</b><small>Найди одинаковые карточки — память и внимание</small><i>от 600 ₽</i></div>
+        <div class="type glass"><span>✏️</span><b>Вставь пропущенное</b><small>Пропуски в тексте, буквы в словах</small><i>от 700 ₽</i></div>
+        <div class="type glass"><span>🧩</span><b>Кроссворд / пазл</b><small>Собери картинку или разгадай слова</small><i>от 900 ₽</i></div>
+        <div class="type glass"><span>🗺️</span><b>Своя идея</b><small>Квест, лента времени, карта, лабиринт — обсудим</small><i>по договорённости</i></div>
+      </div>
+    </section>
+
+    <!-- ===== Цены ===== -->
+    <section id="pricing" class="container section">
+      <div class="section-head">
+        <span class="eyebrow">Стоимость</span>
+        <h2>Цена зависит от сложности</h2>
+        <p>Срок для любого тарифа — <b>2–3 дня</b>. Если нужно быстрее — напишите, обсудим.</p>
+      </div>
+      <div class="pricing">
+        <article class="price glass">
+          <h3>Простое</h3>
+          <div class="price-val">от 500 ₽</div>
+          <ul>
+            <li>1 упражнение, до 10 заданий</li>
+            <li>Текст без картинок или с вашими картинками</li>
+            <li>Звуковой отклик</li>
+            <li>Светлая или тёмная тема</li>
+          </ul>
+          <a href="#contact" class="btn btn-glass" data-plan="Простое">Выбрать</a>
+        </article>
+        <article class="price glass featured">
+          <span class="badge-top">Популярно</span>
+          <h3>Стандарт</h3>
+          <div class="price-val">от 900 ₽</div>
+          <ul>
+            <li>1 упражнение, до 20 заданий</li>
+            <li>Подбор картинок и иконок</li>
+            <li>Озвучка задания голосом</li>
+            <li>Любая тема + возможность редактировать</li>
+            <li>Подсчёт баллов и финальный экран</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary" data-plan="Стандарт">Выбрать</a>
+        </article>
+        <article class="price glass">
+          <h3>Комплекс</h3>
+          <div class="price-val">от 2 000 ₽</div>
+          <ul>
+            <li>Набор из 3+ упражнений к одной теме</li>
+            <li>Единый стиль под ваш урок или праздник</li>
+            <li>Свой вариант оформления (цвета, персонаж)</li>
+            <li>Таймер, уровни, сложные механики</li>
+            <li>Правки в течение недели</li>
+          </ul>
+          <a href="#contact" class="btn btn-glass" data-plan="Комплекс">Выбрать</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Контакты / форма ===== -->
+    <section id="contact" class="container section">
+      <div class="contact glass">
+        <div class="contact-info">
+          <span class="eyebrow">Связаться</span>
+          <h2>Анжелина <span class="grad-text">Михайловна</span></h2>
+          <p>Расскажите, какое упражнение нужно — и я отвечу в течение дня.</p>
+          <a class="mail-link" href="mailto:zloipingvin2000@gmail.com">
+            <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            zloipingvin2000@gmail.com
+          </a>
+          <ul class="contact-facts">
+            <li>⏱ Срок: 2–3 дня</li>
+            <li>💰 От 500 ₽</li>
+            <li>👶 Дошкольники и школьники</li>
+          </ul>
+        </div>
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="field">
+            <label for="fName">Ваше имя</label>
+            <input id="fName" name="name" type="text" placeholder="Мария Ивановна" required />
+          </div>
+          <div class="field">
+            <label for="fEmail">Email для ответа</label>
+            <input id="fEmail" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="fAge">Возраст детей</label>
+              <select id="fAge" name="age_group">
+                <option>Дошкольники (3–6 лет)</option>
+                <option>Начальная школа (1–4 класс)</option>
+                <option>Средняя школа (5–9 класс)</option>
+                <option>Старшая школа (10–11 класс)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fType">Тип упражнения</label>
+              <select id="fType" name="exercise_type">
+                <option>Викторина</option>
+                <option>Найди пару</option>
+                <option>Собери слово</option>
+                <option>Распредели по группам</option>
+                <option>Верно / неверно</option>
+                <option>Мемори</option>
+                <option>Вставь пропущенное</option>
+                <option>Кроссворд / пазл</option>
+                <option>Своя идея</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="fPlan">Тариф</label>
+              <select id="fPlan" name="plan">
+                <option>Простое (от 500 ₽)</option>
+                <option>Стандарт (от 900 ₽)</option>
+                <option>Комплекс (от 2 000 ₽)</option>
+                <option>Пока не знаю</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fStyle">Оформление</label>
+              <select id="fStyle" name="style">
+                <option>Светлое</option>
+                <option>Тёмное</option>
+                <option>Красочное</option>
+                <option>Свой вариант</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="fMsg">Описание задачи</label>
+            <textarea id="fMsg" name="message" rows="4" placeholder="Тема урока, что должны сделать дети, сколько заданий, есть ли материал…" required></textarea>
+          </div>
+          <label class="check"><input type="checkbox" id="fAgree" required /> Согласен(на) на обработку данных для ответа на заявку</label>
+          <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">Отправить заявку</button>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <div>© <span id="year"></span> Анжелина Михайловна · Интерактивные упражнения для уроков</div>
+    <div><a href="mailto:zloipingvin2000@gmail.com">zloipingvin2000@gmail.com</a></div>
+  </footer>
+
+  <!-- ===== Панель темы ===== -->
+  <div class="theme-panel glass" id="themePanel" role="dialog" aria-label="Оформление" hidden>
+    <div class="theme-panel-head">
+      <b>Оформление</b>
+      <button class="icon-btn" id="themeClose" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="theme-options">
+      <button class="theme-opt" data-theme="light"><span class="sw sw-light"></span>Светлая</button>
+      <button class="theme-opt" data-theme="dark"><span class="sw sw-dark"></span>Тёмная</button>
+      <button class="theme-opt" data-theme="colorful"><span class="sw sw-colorful"></span>Красочная</button>
+      <button class="theme-opt" data-theme="custom"><span class="sw sw-custom"></span>Своя</button>
+    </div>
+    <div class="custom-fields" id="customFields" hidden>
+      <label>Цвет 1 <input type="color" id="c1" value="#4285f4" /></label>
+      <label>Цвет 2 <input type="color" id="c2" value="#9b72cb" /></label>
+      <label>Цвет 3 <input type="color" id="c3" value="#d96570" /></label>
+      <label>Фон <input type="color" id="cBg" value="#ffffff" /></label>
+      <label>Текст <input type="color" id="cText" value="#1a1a2e" /></label>
+    </div>
+    <p class="theme-note">Выбор сохраняется в вашем браузере.</p>
+  </div>
+
+  <!-- ===== Модалка редактора ===== -->
+  <div class="modal" id="editorModal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card glass">
+      <div class="modal-head">
+        <h3 id="editorTitle">Редактировать</h3>
+        <button class="icon-btn" data-close aria-label="Закрыть">✕</button>
+      </div>
+      <p class="modal-hint" id="editorHint"></p>
+      <textarea id="editorText" rows="10" spellcheck="false"></textarea>
+      <div class="modal-actions">
+        <button class="btn btn-glass" data-close>Отмена</button>
+        <button class="btn btn-primary" id="editorSave">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast glass" id="toast" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/exercises.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
