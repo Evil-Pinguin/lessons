@@ -228,7 +228,7 @@ body:not(.sound-off) .ico-off { display: none; }
 }
 .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(34,197,94,.2); animation: pulse 1.8s infinite; }
 @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } }
-.lead { font-size: 1.15rem; color: var(--muted); max-width: 560px; }
+.lead { font-size: 1.15rem; color: var(--text); opacity: .85; font-weight: 500; max-width: 560px; }
 .hero-cta { display: flex; gap: .8rem; flex-wrap: wrap; margin: 1.6rem 0; }
 .hero-stats { list-style: none; padding: 0; margin: 0; display: flex; gap: 2rem; flex-wrap: wrap; }
 .hero-stats li { display: flex; flex-direction: column; }
@@ -321,7 +321,7 @@ body:not(.sound-off) .ico-off { display: none; }
 .demo-tabs::-webkit-scrollbar { display: none; }
 .tab { flex: 1; white-space: nowrap; padding: .7rem 1rem; border-radius: 999px; border: 0; background: transparent; font-weight: 700; color: var(--muted); transition: background .25s, color .25s; }
 .tab.active { color: #fff; background: var(--gradient); box-shadow: 0 6px 18px rgba(120,100,220,.3); }
-.demo-stage { padding: 1.5rem; min-height: 420px; }
+.demo-stage { padding: 1.5rem; min-height: 340px; }
 .demo-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
 .demo-title { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
 .demo-actions { display: flex; gap: .4rem; flex-wrap: wrap; }
@@ -833,3 +833,31 @@ h1 .grad-text::after {
   .me-photo { max-width: 340px; margin: 0 auto; }
   .me-facts { align-items: center; }
 }
+
+/* =========================================================
+   Под аудиторию 40+: гарантия совместимости, отзывы-переписки
+   ========================================================= */
+
+/* плашка-гарантия под статистикой героя */
+.hero-guarantee {
+  display: flex; align-items: flex-start; gap: .55rem; margin: 1.1rem 0 0;
+  font-size: .92rem; font-weight: 600; color: var(--text); opacity: .8; line-height: 1.45;
+}
+.hero-guarantee svg { flex-shrink: 0; margin-top: 2px; color: var(--ok); }
+.hero-text > :nth-child(7) { animation-delay: .9s; }
+
+/* отзывы — как скриншоты переписок */
+.review { gap: 1rem; }
+.chat { padding: 1.1rem 1rem .5rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--g2) 7%, var(--bg-soft)); }
+.chat-bubble {
+  max-width: 94%; background: var(--glass-bg-strong); border: 1px solid var(--line);
+  border-radius: 14px 14px 14px 4px; padding: .8rem .95rem .5rem;
+  box-shadow: 0 3px 10px rgba(60,70,120,.08);
+}
+.chat-bubble p { margin: 0 0 .4rem; font-size: .97rem; line-height: 1.45; }
+.chat-time {
+  display: flex; align-items: center; justify-content: flex-end; gap: .3rem;
+  font-size: .72rem; color: var(--muted);
+}
+.chat-time i { font-style: normal; color: #34b7f1; font-weight: 700; letter-spacing: -1.5px; }
+.review .review-author { margin-top: 0; }
