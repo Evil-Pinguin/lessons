@@ -145,9 +145,29 @@
       localStorage.setItem(DRAFT, JSON.stringify(d));
     });
 
+    /* ---------- Фолбэк: WhatsApp / почта — работает с телефона, без VPN ---------- */
+    const WA_NUMBER = '79681515691';
+    const fallbackRow = $('#formFallback');
+    const isTouch = matchMedia('(pointer: coarse)').matches;
+    const waUrl = p => 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(
+      `Заявка с сайта «Уроки+»\nИмя: ${p.name}\nОтветить на: ${p.email}\nВозраст детей: ${p.age_group}\nТип: ${p.exercise_type}\nТариф: ${p.plan}\nОформление: ${p.style}\n\n${p.message}`);
+    const mailUrl = p => 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(`Заявка: ${p.exercise_type} (${p.plan})`) + '&body=' + encodeURIComponent(
+      `Имя: ${p.name}\nEmail: ${p.email}\nВозраст детей: ${p.age_group}\nТип: ${p.exercise_type}\nТариф: ${p.plan}\nОформление: ${p.style}\n\n${p.message}`);
+    function openFallback(p, err) {
+      fallbackRow.hidden = false;
+      $('#fbWa').href = waUrl(p);
+      $('#fbMail').href = mailUrl(p);
+      status.classList.remove('bad'); status.classList.add('ok');
+      status.textContent = err
+        ? (isTouch ? 'Не удалось отправить автоматически — открываю WhatsApp.' : 'Не удалось отправить автоматически — открываю почтовый клиент.')
+        : (isTouch ? 'Открываю WhatsApp — там просто нажмите «Отправить».' : 'Открываю почтовый клиент… Если не открылось — жмите кнопку ниже.');
+      location.href = isTouch ? waUrl(p) : mailUrl(p);
+    }
+
     form.addEventListener('submit', async e => {
       e.preventDefault();
       status.className = 'form-status'; status.textContent = '';
+      fallbackRow.hidden = true;
       let valid = true;
       ['fName', 'fEmail', 'fMsg'].forEach(id => {
         const f = $('#' + id); const ok = f.checkValidity() && f.value.trim();
@@ -167,7 +187,7 @@
       const done = () => {
         Sound.play('fanfare');
         status.textContent = 'Заявка отправлена! Отвечу на вашу почту в течение дня.'; status.classList.add('ok');
-        form.reset(); localStorage.removeItem(DRAFT);
+        form.reset(); localStorage.removeItem(DRAFT); fallbackRow.hidden = true;
       };
       try {
         // 1) Серверная функция Vercel (/api/submit) — ключи не попадают в браузер
@@ -191,16 +211,12 @@
           done(); return;
         }
 
-        // 3) Ничего не настроено — письмо
-        const subject = encodeURIComponent(`Заявка на упражнение: ${payload.exercise_type} (${payload.plan})`);
-        const body = encodeURIComponent(
-          `Имя: ${payload.name}\nEmail: ${payload.email}\nВозраст: ${payload.age_group}\nТип: ${payload.exercise_type}\nТариф: ${payload.plan}\nОформление: ${payload.style}\n\n${payload.message}`);
-        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+        // 3) API и Supabase недоступны — WhatsApp (с любого телефона, без VPN) или почта
         Sound.play('correct');
-        status.textContent = 'Открываю почтовый клиент… Если письмо не открылось — напишите на ' + CONTACT_EMAIL; status.classList.add('ok');
+        openFallback(payload);
       } catch (err) {
         console.error(err); Sound.play('wrong');
-        status.textContent = (err && err.message && /[а-яА-Я]/.test(err.message) ? err.message + '. ' : 'Не удалось отправить. ') + 'Напишите, пожалуйста, на ' + CONTACT_EMAIL; status.classList.add('bad');
+        openFallback(payload, err);
       } finally {
         submitBtn.disabled = false; submitBtn.textContent = 'Отправить заявку';
       }

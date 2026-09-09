@@ -473,6 +473,9 @@ textarea { resize: vertical; }
 .check input { margin-top: .25rem; accent-color: var(--g2); }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .form-status { min-height: 1.4em; font-weight: 600; margin: 0; }
+.form-fallback { display: flex; gap: .6rem; flex-wrap: wrap; }
+.form-fallback .btn { flex: 1; min-width: 190px; }
+.btn-wa { color: #fff; background: linear-gradient(135deg, #25d366, #128c7e); box-shadow: 0 8px 20px rgba(37,211,102,.35); }
 .form-status.ok { color: var(--ok); }
 .form-status.bad { color: var(--bad); }
 
