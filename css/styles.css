@@ -152,10 +152,16 @@ p { margin: 0 0 1em; }
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0) scale(.98); }
 .btn-primary {
-  color: #fff; background: var(--gradient); background-size: 200% 100%;
-  box-shadow: 0 8px 24px rgba(120, 100, 220, .35);
+  color: #fff; background: linear-gradient(90deg, #2b6de0 0%, #7a4fc9 50%, #d34c66 100%); background-size: 200% 100%;
+  border: 2px solid rgba(255,255,255,.85); text-shadow: 0 1px 2px rgba(0,0,0,.25);
+  box-shadow: 0 10px 28px rgba(80, 70, 200, .4), 0 0 0 1px rgba(60,60,140,.12);
 }
-.btn-primary:hover { background-position: 100% 0; box-shadow: 0 12px 30px rgba(120, 100, 220, .45); }
+[data-theme="colorful"] .btn-primary { background: linear-gradient(90deg, #e8433f 0%, #e39b00 50%, #0aa885 100%); background-size: 200% 100%; }
+[data-theme="custom"] .btn-primary { background: var(--gradient); background-size: 200% 100%; }
+.btn-primary:hover { background-position: 100% 0; box-shadow: 0 14px 34px rgba(80, 70, 200, .5), 0 0 0 1px rgba(60,60,140,.15); }
+.btn-hero { font-size: 1.15rem; padding: 1.1rem 2.4rem; border-radius: 999px; }
+.btn-hero::after { content: "→"; font-size: 1.2em; line-height: 1; transition: transform .2s; }
+.btn-hero:hover::after { transform: translateX(4px); }
 .btn-glass {
   background: var(--glass-bg-strong); border-color: var(--glass-border);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -234,7 +240,7 @@ body:not(.sound-off) .ico-off { display: none; }
 .badge { font-size: .78rem; font-weight: 700; padding: .3rem .7rem; border-radius: 999px; color: #fff; background: var(--gradient); }
 .score { font-family: var(--font-display); font-weight: 700; }
 .hero-card-q { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; }
-.hero-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+.hero-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; max-width: 360px; }
 .hero-card-hint { color: var(--muted); font-size: .85rem; margin: 1rem 0 0; }
 .tile {
   aspect-ratio: 1; border-radius: var(--radius-sm); display: grid; place-items: center; font-size: 2rem;
@@ -248,16 +254,35 @@ body:not(.sound-off) .ico-off { display: none; }
 @keyframes shake { 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
 
 /* ---------- Картинки ---------- */
-.pic { width: 56px; height: 56px; object-fit: contain; display: inline-block; vertical-align: middle; filter: drop-shadow(0 4px 8px rgba(0,0,0,.12)); }
-.pic-sm { width: 44px; height: 44px; }
-.pic-md { width: 70%; height: 70%; }
-.pic-lg { width: 140px; height: 140px; }
+/* картинки в упражнениях — компактные, в рамке */
+.pic {
+  width: 48px; height: 48px; object-fit: contain; display: inline-block; vertical-align: middle; padding: 5px;
+  border-radius: 12px; border: 2px solid var(--line); background: rgba(255,255,255,.85); box-shadow: 0 2px 6px rgba(60,70,120,.08);
+}
+[data-theme="dark"] .pic { background: rgba(255,255,255,.08); }
+.pic-sm { width: 40px; height: 40px; padding: 4px; border-radius: 10px; }
+.pic-md { width: 62%; height: 62%; padding: 6px; border-radius: 14px; }
+.pic-lg { width: 96px; height: 96px; padding: 8px; border-radius: 18px; border-width: 2px; }
+.pair-item.ok .pic, .pair-item.sel .pic { border-color: inherit; }
+.mem-card.done .pic { border-color: var(--ok); }
+/* кнопка «прослушать» у вопроса */
+.speak-btn {
+  display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--line);
+  background: var(--glass-bg-strong); color: var(--g1); margin-left: .6rem; vertical-align: middle; flex-shrink: 0;
+  transition: transform .15s, background .2s, color .2s;
+}
+.speak-btn:hover { transform: scale(1.1); color: #fff; background: var(--gradient); border-color: transparent; }
+.quiz-q { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .4rem; }
+.quiz-q .num { width: 100%; }
+.quiz-q .q-text { flex: 1; min-width: 0; }
+.tf-statement { display: flex; align-items: center; justify-content: center; gap: .5rem; flex-wrap: wrap; }
+.word-pic { display: flex; justify-content: center; align-items: center; gap: .75rem; margin-bottom: 1rem; }
 .card-ico img { width: 72%; height: 72%; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,.18)); }
-.tile img { width: 78%; height: 78%; object-fit: contain; pointer-events: none; transition: transform .2s; }
+.tile img { width: 66%; height: 66%; object-fit: contain; pointer-events: none; transition: transform .2s; }
+.tile { border: 2px solid var(--line); }
 .tile:hover img { transform: scale(1.08); }
 .tab img { width: 26px; height: 26px; object-fit: contain; margin-right: .45rem; vertical-align: -7px; }
 .type span img { width: 82%; height: 82%; object-fit: contain; }
-.word-pic { display: flex; justify-content: center; margin-bottom: 1rem; }
 .word-pic .pic { animation: bob 3s ease-in-out infinite; }
 @keyframes bob { 50% { transform: translateY(-6px); } }
 .pair-item { display: flex; align-items: center; gap: .6rem; min-height: 60px; justify-content: center; font-size: 1.05rem; }
@@ -396,7 +421,7 @@ body:not(.sound-off) .ico-off { display: none; }
 .tf-btn.dim { opacity: .4; }
 
 /* мемори */
-.memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .7rem; max-width: 520px; margin: 0 auto; perspective: 800px; }
+.memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; max-width: 420px; margin: 0 auto; perspective: 800px; }
 .mem-card { aspect-ratio: 1; position: relative; cursor: pointer; transform-style: preserve-3d; transition: transform .5s; border: 0; background: transparent; padding: 0; }
 .mem-card.flip { transform: rotateY(180deg); }
 .mem-face {
@@ -506,7 +531,8 @@ textarea { resize: vertical; }
   .hero-stats { gap: 1.2rem; }
   .theme-panel { right: 1rem; left: 1rem; width: auto; }
   .demo-stage { padding: 1rem; }
-  .word-slot, .letter-btn { width: 44px; height: 44px; font-size: 1.15rem; }
+  .word-slot, .letter-btn { width: 40px; height: 40px; font-size: 1.05rem; }
+  .pic-lg { width: 80px; height: 80px; }
   .memory-grid { gap: .5rem; }
   .tf-statement { font-size: 1.2rem; }
 }

@@ -9,6 +9,13 @@
   const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   // «img:hero/apple» → картинка из папки img/, иначе — текст
+  // кнопка «прослушать» рядом с вопросом — озвучивает только по нажатию
+  const speakBtn = text => {
+    const b = el('button', 'speak-btn', '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>');
+    b.type = 'button'; b.title = 'Прослушать'; b.setAttribute('aria-label', 'Прослушать');
+    b.addEventListener('click', e => { e.stopPropagation(); Sound.speak(text, { force: true }); });
+    return b;
+  };
   const rich = (s, cls = 'pic') => {
     const m = String(s).trim().match(/^img:([\w\/-]+)$/);
     return m ? `<img src="img/${m[1]}.png" alt="" class="${cls}" draggable="false" />` : esc(s);
@@ -33,7 +40,6 @@
       <button class="btn btn-primary" id="againBtn">Пройти ещё раз</button>`;
     api.result.hidden = false;
     api.result.querySelector('#againBtn').addEventListener('click', () => { Sound.play('click'); api.restart(); });
-    Sound.speak(title);
   }
   function confetti() {
     const colors = ['#4285f4', '#9b72cb', '#d96570', '#22c55e', '#f59e0b', '#06b6d4'];
@@ -89,7 +95,8 @@
         if (i >= d.items.length) return finish(api, { score, total: d.items.length });
         progress(api, i, d.items.length);
         const it = d.items[i];
-        api.body.appendChild(el('div', 'quiz-q', `<span class="num">Вопрос ${i + 1} из ${d.items.length}</span>${esc(it.q)}`));
+        const qEl = el('div', 'quiz-q', `<span class="num">Вопрос ${i + 1} из ${d.items.length}</span><span class="q-text">${esc(it.q)}</span>`);
+        qEl.appendChild(speakBtn(it.q)); api.body.appendChild(qEl);
         const opts = el('div', 'options');
         it.a.forEach((a, k) => {
           const b = el('button', 'opt', `<span class="letter">${letters[k]}</span><span>${esc(a)}</span>`);
@@ -102,7 +109,6 @@
           opts.appendChild(b);
         });
         api.body.appendChild(opts);
-        Sound.speak(it.q);
       };
       step();
     },
@@ -183,7 +189,7 @@
         const [hint, w] = d.items[i];
         const letters = w.split('');
         let pos = 0;
-        api.body.appendChild(el('div', 'word-pic', rich(hint, 'pic pic-lg')));
+        const wp = el('div', 'word-pic', rich(hint, 'pic pic-lg')); wp.appendChild(speakBtn(`Собери слово. ${w.toLowerCase()}`)); api.body.appendChild(wp);
         const target = el('div', 'word-target');
         letters.forEach(() => target.appendChild(el('div', 'word-slot', '')));
         api.body.appendChild(target);
@@ -194,7 +200,7 @@
             if (ch === letters[pos]) {
               b.disabled = true; const s = target.children[pos]; s.textContent = ch; s.classList.add('filled'); pos++; Sound.play('pop');
               if (pos === letters.length) {
-                [...target.children].forEach(x => x.classList.add('ok')); Sound.play('correct'); Sound.speak(w.toLowerCase());
+                [...target.children].forEach(x => x.classList.add('ok')); Sound.play('correct');
                 setTimeout(() => { i++; step(); }, 1100);
               }
             } else { b.classList.add('bad'); mistakes++; Sound.play('wrong'); b.style.animation = 'shake .4s'; setTimeout(() => (b.style.animation = ''), 400); }
@@ -300,6 +306,7 @@
         progress(api, i, d.items.length);
         const [s, v] = d.items[i];
         const card = el('div', 'tf-card', `<div class="tf-statement">${esc(s)}</div>`);
+        card.querySelector('.tf-statement').appendChild(speakBtn(s));
         const btns = el('div', 'tf-buttons');
         const mk = (label, val, cls) => {
           const b = el('button', 'tf-btn ' + cls, label);
@@ -313,7 +320,6 @@
         };
         btns.append(mk('Верно', true, 'tf-true'), mk('Неверно', false, 'tf-false'));
         card.appendChild(btns); api.body.appendChild(card);
-        Sound.speak(s);
       };
       step();
     },

@@ -35,8 +35,8 @@
     voiceBtn.addEventListener('click', () => {
       Sound.setVoice(!Sound.isVoiceOn());
       syncVoice();
-      if (Sound.isVoiceOn()) { Sound.speak('Озвучка включена. Задания теперь будут читаться вслух.'); toast('Голосовая озвучка включена'); }
-      else toast('Голосовая озвучка выключена');
+      if (Sound.isVoiceOn()) { Sound.speak('Озвучка включена.'); toast('Голос включён: кнопки «прослушать» и задания читаются вслух'); }
+      else toast('Голос выключен');
     });
     syncVoice();
 

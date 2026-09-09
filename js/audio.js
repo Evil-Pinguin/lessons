@@ -8,8 +8,10 @@
   const KEY_VOICE = 'lessons_voice';
   let ctx = null;
   let enabled = localStorage.getItem(KEY) !== 'off';
-  // Голос ВЫКЛЮЧЕН по умолчанию — включается только после нажатия кнопки
-  let voiceOn = localStorage.getItem(KEY_VOICE) === 'on';
+  // Голос ВСЕГДА выключен при загрузке страницы — включается только нажатием кнопки
+  // и не запоминается между перезагрузками (чтобы ничего не говорило само).
+  let voiceOn = false;
+  localStorage.removeItem(KEY_VOICE);
 
   function getCtx() {
     if (!ctx) {
@@ -81,7 +83,6 @@
 
   function setVoice(v) {
     voiceOn = !!v;
-    localStorage.setItem(KEY_VOICE, voiceOn ? 'on' : 'off');
     document.body.classList.toggle('voice-on', voiceOn);
     if (!voiceOn && 'speechSynthesis' in window) window.speechSynthesis.cancel();
   }
